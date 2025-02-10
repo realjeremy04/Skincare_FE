@@ -13,10 +13,10 @@ const Hero = () => {
 
       {/* Text Content */}
       <div className="flex flex-col w-[460px] min-w-[240px] max-md:w-full">
-        <h1 className="text-6xl leading-[75px] max-md:text-4xl max-md:leading-[58px]">
+        <h1 className="text-4xl leading-[36px] max-md:text-4xl max-md:leading-[58px]">
           Glow naturally with skinn care
         </h1>
-        <p className="mt-2.5 text-base">
+        <p className="mt-2.5 text-sm">
           Our skincare line is crafted with pure, high-quality ingredients for visible results.
         </p>
         <button className="flex items-center gap-1.5 px-10 py-3.5 mt-10 text-base font-bold bg-red-100 max-md:px-5 rounded-lg">
@@ -35,7 +35,7 @@ const Hero = () => {
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/3d839779a11bb120c52244abc08a37144cd3f85582657ced2ec33a341a14f0bc?placeholderIfAbsent=true"
         alt="Skincare hero"
-        className="object-fill w-[1300px] max-md:w-full"
+        className="object-fill w-[900px] max-md:w-full"
       />
     </div>
   );
