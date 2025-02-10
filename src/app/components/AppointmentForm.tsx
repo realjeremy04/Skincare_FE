@@ -1,0 +1,177 @@
+import React, { useState } from 'react';
+const AppointmentForm = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    phoneNumber: '',
+    appointmentDate: '',
+    email: '',
+    service: '',
+    appointmentTime: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col p-12 w-full bg-red-100 rounded-none max-md:px-5 max-md:max-w-full">
+      <h2 className="self-start ml-3 text-xl font-bold leading-tight text-center max-md:ml-2.5">
+        Book an appointment
+      </h2>
+      <div className="flex flex-wrap gap-8 mt-14 w-full text-center max-md:mt-10 max-md:max-w-full">
+        <div className="flex flex-1 gap-1.5 items-center p-2.5 bg-red-50">
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/fbc1fad0fc81b96be87077239508033426fbbb5c747ccd0364a6ac291edd55a6?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+            alt="Decorative image"
+            className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+          />
+          <label htmlFor="fullName" className="sr-only">Full name</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            placeholder="Full name"
+            className="self-stretch my-auto bg-transparent w-full"
+            aria-label="Full name"
+            required
+          />
+        </div>
+        <div className="flex flex-1 gap-1.5 items-center p-2.5 bg-red-50">
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/d464dd4385771200397d279b938c939a9b6e38bb26a2c943f47166c2dcd8a3ca?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+            alt="Decorative image"
+            className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+          />
+          <label htmlFor="phoneNumber" className="sr-only">Phone number</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+            placeholder="Phone number"
+            className="self-stretch my-auto bg-transparent w-full"
+            aria-label="Phone number"
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-8 mt-5 w-full text-center whitespace-nowrap max-md:max-w-full">
+        <div className="flex flex-1 gap-10 justify-between items-center p-2.5 bg-red-50">
+          <label htmlFor="appointmentDate" className="sr-only">Select date</label>
+          <input
+            type="date"
+            id="appointmentDate"
+            name="appointmentDate"
+            value={formData.appointmentDate}
+            onChange={handleInputChange}
+            className="self-stretch my-auto bg-transparent w-full"
+            aria-label="Select date"
+            required
+          />
+
+        </div>
+        <div className="flex flex-1 gap-1.5 items-center p-2.5 bg-red-50">
+          <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/da6ed4241d285e98dff4d6ae82d9951ba4cd09ea471e7a82d7bc0da4071b4301?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+            alt="Decorative image"
+            className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+          />
+          <label htmlFor="email" className="sr-only">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Email"
+            className="self-stretch my-auto bg-transparent w-full"
+            aria-label="Email"
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-8 mt-5 w-full max-md:max-w-full">
+        <div className="flex flex-1 gap-2.5 items-center py-2.5 pr-1.5 pl-2.5 bg-red-50">
+          <label htmlFor="service" className="sr-only">Select service</label>
+          <select
+            id="service"
+            name="service"
+            value={formData.service}
+            onChange={handleInputChange}
+            className="self-stretch my-auto w-44 bg-transparent"
+            aria-label="Select service"
+            required
+            
+          >
+            <option value="">Select service</option>
+            <option value="haircut">Haircut</option>
+            <option value="coloring">Coloring</option>
+            <option value="styling">Styling</option>
+          </select>
+
+        </div>
+        <div className="flex flex-1 gap-1.5 items-center p-2.5 text-center bg-red-50">
+          <label htmlFor="appointmentTime" className="sr-only">Appointment time</label>
+          <input
+            type="time"
+            id="appointmentTime"
+            name="appointmentTime"
+            value={formData.appointmentTime}
+            onChange={handleInputChange}
+            className="self-stretch my-auto bg-transparent w-full"
+            aria-label="Appointment time"
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-1.5 items-start px-2.5 pt-2.5 pb-20 mt-5 whitespace-nowrap bg-red-50 min-h-[118px]">
+        <img
+          loading="lazy"
+          src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/c8c7c049e0a13bf7f0f45d25f5e1cdc16d96ee066d6fbb46f66f39467e959546?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+          alt="Decorative image"
+          className="object-contain shrink-0 w-6 aspect-square"
+        />
+        <label htmlFor="message" className="sr-only">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleInputChange}
+          placeholder="Message"
+          className="w-44 bg-transparent"
+          aria-label="Message"
+        ></textarea>
+      </div>
+      <button
+        type="submit"
+        className="flex gap-1.5 justify-center items-center self-start px-10 py-3 mt-10 font-bold whitespace-nowrap bg-rose-50 rounded-none max-md:px-5"
+      >
+        <img
+          loading="lazy"
+          src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/a64faec05d48bdee8217e1107ab16115faf9f634e257974e1722f17c440f2e9d?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+          alt="Decorative image"
+          className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+        />
+        <span className="self-stretch my-auto">Submit</span>
+      </button>
+    </form>
+  );
+};
+
+export default AppointmentForm;

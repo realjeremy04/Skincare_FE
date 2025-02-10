@@ -1,7 +1,8 @@
 import React from 'react';
 import SponsorLogo from './SponsorLogo';
 import TestimonialCard from './TestimonialCard';
-import BlogPost from './BlogPost';
+import AppointmentForm from './AppointmentForm';
+import Certification from './Certification';
 
 interface Testimonial {
   rating: number;
@@ -77,19 +78,17 @@ const ClientTestimonials = () => {
               alt=""
               className="object-contain mt-20 max-w-full rounded-none aspect-[1.39] w-[380px] max-md:mt-10"
             />
-            <BlogPost
-              imageSrc="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/bec278afebcd0d527e6f0f07bf99dd10fe66dcbbd5ea979643173e90a59851f4?apiKey=41aab81e665b459d8a900c6a1ab04494&"
-              title="The ultimate guide to winter skincare"
-              date="November 3, 2024"
-            />
           </div>
         </div>
         <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
           <div className="flex flex-col rounded-none max-w-[770px]" />
           <div className="flex flex-col px-10 w-full bg-red-400 max-md:pl-5 max-md:max-w-full">
-            <div className="flex shrink-0 h-[680px] max-md:max-w-full" />
+       
+            <Certification />
           </div>
-          <div className="flex mt-32 w-full bg-red-100 rounded-none min-h-[610px] max-md:max-w-full" />
+          <div className="flex mt-32 w-full bg-red-100 rounded-ee-sm min-h-[610px] max-md:max-w-full">
+            <AppointmentForm />
+          </div>
         </div>
       </div>
     </div>
