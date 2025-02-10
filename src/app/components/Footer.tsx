@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export const Footer = () => {
   return (
-    <footer className="flex overflow-hidden flex-col pr-20 pb-8 w-full bg-red-400 max-md:pr-5 max-md:max-w-full">
-      <div className="w-full max-w-[1570px] max-md:max-w-full">
+    <footer className="flex overflow-hidden flex-col pr-20 pb-8 w-full bg-red-400 max-md:pr-5 max-md:max-w-full mt-2">
+      <div className="w-full max-w-[1570px] max-md:max-w-full ">
         <div className="flex gap-5 max-md:flex-col">
           <div className="w-1/5 max-md:ml-0 max-md:w-full">
             <img
@@ -23,7 +23,7 @@ export const Footer = () => {
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/87946f214e8fc4237d6d7e322153e46391b464cc9a4f861e7d6ec137fb06c61a?placeholderIfAbsent=true"
                     alt=""
-                    className="object-contain shrink-0 self-start aspect-square fill-rose-50 w-[49px]"
+                    className="mt-9 object-contain shrink-0 self-start aspect-square fill-rose-50 w-[49px]"
                   />
                   <span className="self-end mt-7">| skin care</span>
                 </div>

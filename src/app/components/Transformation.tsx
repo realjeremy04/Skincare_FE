@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Sponsors: React.FC = () => {
+export const Transformation = () => {
   return (
     <>
       <h2 className="self-center mt-52 text-5xl font-bold leading-tight text-red-400 max-md:mt-10 max-md:max-w-full">
@@ -45,12 +45,8 @@ export const Sponsors: React.FC = () => {
   );
 };
 
-interface FilterButtonProps {
-  icon: string;
-  text: string;
-}
 
-const FilterButton: React.FC<FilterButtonProps> = ({ icon, text }) => {
+const FilterButton = ({ icon, text }) => {
   return (
     <button className="flex flex-1 gap-1.5 justify-center items-center p-2.5 bg-rose-50 rounded-3xl">
       <img
@@ -64,12 +60,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({ icon, text }) => {
   );
 };
 
-interface TransformationSetProps {
-  beforeImage: string;
-  afterImage: string;
-}
 
-const TransformationSet: React.FC<TransformationSetProps> = ({ beforeImage, afterImage }) => {
+const TransformationSet = ({ beforeImage, afterImage }) => {
   return (
     <div className="flex flex-wrap gap-1.5 justify-between items-center">
       <div className="flex flex-col self-stretch my-auto rounded-none w-[239px]">
@@ -94,7 +86,7 @@ const TransformationSet: React.FC<TransformationSetProps> = ({ beforeImage, afte
   );
 };
 
-const CallToAction: React.FC = () => {
+const CallToAction = () => {
   return (
     <div className="flex flex-wrap gap-5 justify-between self-center px-20 py-14 mt-40 max-w-full text-red-400 bg-red-100 rounded-[200px] w-[1200px] max-md:px-5 max-md:mt-10">
       <div className="max-md:max-w-full">
@@ -118,7 +110,7 @@ const CallToAction: React.FC = () => {
   );
 };
 
-const Stats: React.FC = () => {
+const Stats = () => {
   return (
     <div className="flex flex-wrap gap-10 items-center self-center mt-36 text-center text-red-400 max-md:mt-10 max-md:max-w-full">
       <StatItem
@@ -137,14 +129,10 @@ const Stats: React.FC = () => {
   );
 };
 
-interface StatItemProps {
-  number: string;
-  description: string;
-}
 
-const StatItem: React.FC<StatItemProps> = ({ number, description }) => {
+const StatItem = ({ number, description }) => {
   return (
-    <div className="flex flex-col items-start self-stretch my-auto w-[227px]">
+    <div className="flex flex-col items-center self-stretch my-auto w-[227px]">
       <div className="text-4xl font-bold leading-tight">{number}</div>
       <p className="mt-2.5 text-base font-medium">{description}</p>
     </div>

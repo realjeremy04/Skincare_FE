@@ -1,12 +1,12 @@
 "use client";
 import React from 'react';
 import { Header } from './../components/Header';
-import { Hero } from './../components/Hero';
 import { Features } from './../components/Features';
 import { Services } from './../components/Services';
 import { Footer } from './../components/Footer';
-import { Testimonials } from '../components/Testimonials';
-import { Sponsors } from '../components/Sponsors';
+import { Transformation } from '../components/Transformation';
+import ClientTestimonials from './../components/ClientTestimonials';
+import Hero from '../components/Hero';
 
 export const GlistenPage = () => {
   return (
@@ -16,8 +16,8 @@ export const GlistenPage = () => {
         <Hero />
         <Features />
         <Services />
-        <Testimonials />
-        <Sponsors />
+        <Transformation />
+        <ClientTestimonials />
         <Footer />
       </main>
     </div>

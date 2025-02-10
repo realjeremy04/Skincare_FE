@@ -10,13 +10,13 @@ export const Services = () => {
               Our skincare services
             </h2>
           </div>
-          
+
           <div className="ml-5 w-[74%] max-md:ml-0 max-md:w-full">
             <div className="flex flex-wrap gap-10 self-stretch my-auto w-full text-base max-md:mt-10 max-md:max-w-full">
               <p className="flex-auto font-medium text-rose-50 w-[386px] max-md:max-w-full">
                 Whether you're new to skincare or a seasoned pro, our services are here to help you achieve your healthiest skin. Explore our tailored offerings below.
               </p>
-              
+
               <button className="flex gap-2.5 justify-center items-center px-10 py-3 my-auto font-bold text-red-400 bg-red-50 rounded-none max-md:px-5">
                 <span>View all services</span>
                 <img
@@ -40,22 +40,22 @@ export const Services = () => {
             description="Hydrating Facials: Deeply nourishing facials designed to hydrate and refresh the skin."
             bgColor="bg-orange-100"
           />
-          
+
           <ServiceCard
             image="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/5c29b9f1b4671cafa9889ce2536513ae595a84c89ac0212e769296841a0fd6e3?placeholderIfAbsent=true"
+            icon="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/729afd0cb9a6edcd9b1e819f61508ef7c1385a67eef5097844348b3bede79c13?placeholderIfAbsent=true"
             title="Body treatments"
             description="Body Contouring: Non-surgical treatments to tighten and tone the skin, reducing cellulite."
+            bgColor="bg-white"
+          />
+          <ServiceCard
+            image="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/5094d80fd58c9293ba8d399c5deab8b1ed8990cac170eb38186f4b1696a5cf13?apiKey=41aab81e665b459d8a900c6a1ab04494&"
+            icon="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/729afd0cb9a6edcd9b1e819f61508ef7c1385a67eef5097844348b3bede79c13?placeholderIfAbsent=true"
+            title="Hydration Therapy"
+            description="Breast Lift: Enhances and lifts breast contours for a firmer appearance."
             bgColor="bg-red-50"
           />
-          
-          <div className="ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/51c5fefe5551a4ffce59da1dcdf27e1d09404bbe10997dc394d4b2833481b95f?placeholderIfAbsent=true"
-              alt="Service"
-              className="object-cover grow w-full border-r border-solid aspect-[100] border-r-[color:var(--Primary-P1,#ED6672)] object-[bottom_left] rounded-[100px_0px_0px_0px] max-md:max-w-full"
-            />
-          </div>
+
         </div>
       </div>
     </section>
