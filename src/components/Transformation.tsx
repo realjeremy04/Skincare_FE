@@ -1,6 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export const Transformation = () => {
+interface FilterButtonProps {
+  icon: string;
+  text: string;
+}
+
+interface TransformationSetProps {
+  beforeImage: string;
+  afterImage: string;
+}
+
+interface StatItemProps {
+  number: string;
+  description: string;
+}
+
+export const Transformation: React.FC = () => {
+  const [currentSet, setCurrentSet] = useState(0);
+
+  const transformationSets = [
+    {
+      beforeImage: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/52722c46953ba05306b3c0996117221157d6393b00fe6f3efcd7ef6bb8505101?placeholderIfAbsent=true",
+      afterImage: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/5057e9281628f7d35daf73fd57c79110bff7d2e876045f721d42d03044fdc706?placeholderIfAbsent=true"
+    },
+    {
+      beforeImage: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/9e31f37a0f2acacc0774b34b1c9405db3ef9e2e9b0971db40b49c8528722e296?placeholderIfAbsent=true",
+      afterImage: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/705f6914567f88607336329e45b0d29505d3de360cd5e3bd2daf7475a603b9be?placeholderIfAbsent=true"
+    }
+  ];
+
+  const handleNext = () => {
+    setCurrentSet((prev) => (prev + 1) % transformationSets.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentSet((prev) => (prev - 1 + transformationSets.length) % transformationSets.length);
+  };
+
   return (
     <>
       <h2 className="self-center mt-52 text-5xl font-bold leading-tight text-red-400 max-md:mt-10 max-md:max-w-full">
@@ -12,22 +48,18 @@ export const Transformation = () => {
         <FilterButton icon="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/03a6b8ca1ac5677223a65dde62a0c7d72c7ddbd406170a8234579c0e59a5aacd?placeholderIfAbsent=true" text="Face treatments" />
       </div>
       
-      <div className="flex flex-wrap gap-5 justify-between self-center mt-3 max-w-full text-xl font-bold leading-tight text-red-400 whitespace-nowrap w-[1190px]">
+      <div className="flex flex-wrap gap-5 justify-between self-center mt-3 max-w-full text-xl font-bold leading-tight text-red-400 whitespace-nowrap w-[990px]">
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/a5d230d6a9b510f85c76afb63856170086a10c5af3e7a7123235fb8754bd24e3?placeholderIfAbsent=true"
           className="object-contain shrink-0 my-auto aspect-square w-[60px]"
           alt="Left arrow"
+          onClick={handlePrev}
         />
         
         <TransformationSet
-          beforeImage="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/52722c46953ba05306b3c0996117221157d6393b00fe6f3efcd7ef6bb8505101?placeholderIfAbsent=true"
-          afterImage="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/5057e9281628f7d35daf73fd57c79110bff7d2e876045f721d42d03044fdc706?placeholderIfAbsent=true"
-        />
-        
-        <TransformationSet
-          beforeImage="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/9e31f37a0f2acacc0774b34b1c9405db3ef9e2e9b0971db40b49c8528722e296?placeholderIfAbsent=true"
-          afterImage="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/705f6914567f88607336329e45b0d29505d3de360cd5e3bd2daf7475a603b9be?placeholderIfAbsent=true"
+          beforeImage={transformationSets[currentSet].beforeImage}
+          afterImage={transformationSets[currentSet].afterImage}
         />
         
         <img
@@ -35,6 +67,7 @@ export const Transformation = () => {
           src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/b0f756e1b58e9fe506b422e0a53f8e77cf07c1202ea9b908f45f171df009a334?placeholderIfAbsent=true"
           className="object-contain shrink-0 my-auto aspect-square w-[60px]"
           alt="Right arrow"
+          onClick={handleNext}
         />
       </div>
       
@@ -45,8 +78,7 @@ export const Transformation = () => {
   );
 };
 
-
-const FilterButton = ({ icon, text }) => {
+const FilterButton: React.FC<FilterButtonProps> = ({ icon, text }) => {
   return (
     <button className="flex flex-1 gap-1.5 justify-center items-center p-2.5 bg-rose-50 rounded-3xl">
       <img
@@ -60,8 +92,7 @@ const FilterButton = ({ icon, text }) => {
   );
 };
 
-
-const TransformationSet = ({ beforeImage, afterImage }) => {
+const TransformationSet: React.FC<TransformationSetProps> = ({ beforeImage, afterImage }) => {
   return (
     <div className="flex flex-wrap gap-1.5 justify-between items-center">
       <div className="flex flex-col self-stretch my-auto rounded-none w-[239px]">
@@ -86,7 +117,7 @@ const TransformationSet = ({ beforeImage, afterImage }) => {
   );
 };
 
-const CallToAction = () => {
+const CallToAction: React.FC = () => {
   return (
     <div className="flex flex-wrap gap-5 justify-between self-center px-20 py-14 mt-40 max-w-full text-red-400 bg-red-100 rounded-[200px] w-[1200px] max-md:px-5 max-md:mt-10">
       <div className="max-md:max-w-full">
@@ -110,7 +141,7 @@ const CallToAction = () => {
   );
 };
 
-const Stats = () => {
+const Stats: React.FC = () => {
   return (
     <div className="flex flex-wrap gap-10 items-center self-center mt-36 text-center text-red-400 max-md:mt-10 max-md:max-w-full">
       <StatItem
@@ -129,8 +160,7 @@ const Stats = () => {
   );
 };
 
-
-const StatItem = ({ number, description }) => {
+const StatItem: React.FC<StatItemProps> = ({ number, description }) => {
   return (
     <div className="flex flex-col items-center self-stretch my-auto w-[227px]">
       <div className="text-4xl font-bold leading-tight">{number}</div>
