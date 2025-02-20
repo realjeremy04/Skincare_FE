@@ -48,7 +48,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 
 export const Services: React.FC = () => {
   return (
-    <section className="flex flex-col pt-36 pl-20 mt-36 w-full bg-red-400 max-md:pt-24 max-md:pl-5 max-md:mt-10 max-md:max-w-full">
+    <section className="flex flex-col pt-36 pb-20 px-20 mt-36 w-full bg-red-400 max-md:pt-24 max-md:pl-5 max-md:mt-10 max-md:max-w-full">
       <div className="self-center ml-4 max-w-full w-[1232px]">
         <div className="flex gap-5 max-md:flex-col">
           <div className="w-[26%] max-md:ml-0 max-md:w-full">

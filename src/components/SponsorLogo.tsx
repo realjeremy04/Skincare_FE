@@ -14,7 +14,7 @@ const SponsorLogo: React.FC<SponsorLogoProps> = ({ name, logoSrc }) => {
         alt={`${name} logo`}
         className="object-contain shrink-0 aspect-square w-[30px]"
       />
-      <div className="overflow-hidden py-1 w-[65px]">{name}</div>
+      <div className="overflow-hidden py-1">{name}</div>
     </div>
   );
 };
