@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
     "axios": "^1.7.9",
+    "countup.js": "^2.8.0",
     "formik": "^2.4.6",
     "my-app": "file:",
     "next": "15.1.5",
