@@ -24,9 +24,32 @@ const Register = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#fafaf9",
+        position: "relative",
       }}
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          left: 16,
+        }}
+      >
+        <Button
+          variant="text"
+          onClick={() => router.push("/")}
+          sx={{
+            textTransform: "none",
+            fontSize: "1rem",
+            color: "#FF909A",
+            fontWeight: "bold",
+            "&:hover": { textDecoration: "underline" },
+          }}
+        >
+          Home
+        </Button>
+      </Box>
+
       <Paper
         elevation={6}
         sx={{
@@ -50,7 +73,7 @@ const Register = () => {
             textAlign: "center",
           }}
         >
-          Tạo tài khoản
+          Create Account
         </Typography>
 
         <Typography
@@ -61,7 +84,7 @@ const Register = () => {
             textAlign: "center",
           }}
         >
-          Điền đầy đủ thông tin bên dưới để tạo tài khoản
+          Fill all informations below to create account
         </Typography>
 
         <RegisterForm />
@@ -78,7 +101,7 @@ const Register = () => {
         >
           <Button
             variant="text"
-            onClick={() => router.back()}
+            onClick={() => router.push("/login")}
             sx={{
               textTransform: "none",
               fontSize: "0.9rem",
@@ -88,7 +111,7 @@ const Register = () => {
               mt: 1,
             }}
           >
-            Đã có tài khoản? Đăng nhập
+            Already have account? Login
           </Button>
         </Box>
       </Paper>

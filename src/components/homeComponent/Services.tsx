@@ -53,20 +53,19 @@ export const Services: React.FC = () => {
         <div className="flex gap-5 max-md:flex-col">
           <div className="w-[26%] max-md:ml-0 max-md:w-full">
             <h2 className="text-5xl font-bold text-rose-50 leading-[55px] max-md:mt-10">
-              Các dịch vụ của chúng tôi
+              Our Services
             </h2>
           </div>
 
           <div className="ml-5 w-[74%] max-md:ml-0 max-md:w-full">
             <div className="flex flex-wrap gap-10 self-stretch my-auto w-full text-base max-md:mt-10 max-md:max-w-full">
               <p className="flex-auto font-medium text-rose-50 w-[386px] max-md:max-w-full">
-                Dù bạn là người mới hay đã có kinh nghiệm chăm sóc da, các dịch
-                vụ của chúng tôi luôn sẵn sàng giúp bạn có được làn da khỏe mạnh
-                nhất.
+                Whether you're new to skincare or experienced, our services are
+                always ready to help you achieve your healthiest skin.
               </p>
 
               <button className="flex gap-2.5 justify-center items-center px-10 py-3 my-auto font-bold text-red-400 bg-red-50 hover:bg-red-100 rounded-none max-md:px-5 group transition-all duration-300 rounded-se-3xl">
-                <span className="mr-2">Xem tất cả</span>
+                <span className="mr-2">See all</span>
                 <span className="transform transition-transform duration-300 group-hover:translate-x-2">
                   <ChevronRight />
                 </span>

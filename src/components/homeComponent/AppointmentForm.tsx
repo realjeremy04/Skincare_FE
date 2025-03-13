@@ -41,7 +41,7 @@ const AppointmentForm = () => {
       className="flex flex-col p-12 w-full bg-red-100 rounded-none max-md:px-5 max-md:max-w-full"
     >
       <h2 className="self-start text-red-400 ml-3 text-3xl font-bold leading-tight text-center max-md:ml-2.5">
-        Đặt lịch ngay
+        Book an appointment now
       </h2>
       <div className="flex flex-wrap gap-8 mt-10 w-full text-center max-md:mt-10 max-md:max-w-full">
         <div className="flex flex-1 gap-1.5 items-center p-2.5 bg-red-50">
@@ -55,7 +55,7 @@ const AppointmentForm = () => {
             name="fullName"
             value={formData.fullName}
             onChange={handleInputChange}
-            placeholder="Họ và tên"
+            placeholder="Full name"
             className="self-stretch my-auto bg-transparent w-full focus:outline-none text-red-400"
             aria-label="Full name"
             required
@@ -72,7 +72,7 @@ const AppointmentForm = () => {
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleInputChange}
-            placeholder="Số điện thoại"
+            placeholder="Phone number"
             className="self-stretch my-auto bg-transparent w-full focus:outline-none text-red-400"
             aria-label="Phone number"
             required
@@ -160,7 +160,7 @@ const AppointmentForm = () => {
           value={formData.message}
           onChange={handleInputChange}
           rows={5}
-          placeholder="Ghi chú"
+          placeholder="Notes"
           className="flex-1 w-full bg-transparent focus:outline-none text-red-400 min-h-28"
           aria-label="Message"
         ></textarea>
@@ -170,7 +170,7 @@ const AppointmentForm = () => {
         className="flex gap-3 justify-center items-center self-start px-10 py-3 mt-10 font-bold whitespace-nowrap bg-rose-50 text-red-400 hover:bg-red-200 duration-200 rounded-none max-md:px-5"
       >
         <SendOutlined sx={{ color: "#f87171" }} />
-        <span className="self-stretch my-auto">Đặt lịch</span>
+        <span className="self-stretch my-auto">Book now</span>
       </button>
     </form>
   );

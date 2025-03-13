@@ -65,7 +65,7 @@ export const SkincareInsights = () => {
   return (
     <div className="flex flex-col">
       <h1 className="self-center text-5xl font-bold leading-tight text-center text-red-400 max-md:max-w-full mt-20">
-        Mẹo & thông tin hữu ích về chăm sóc da
+        Skincare tips & useful information
       </h1>
       <div className="my-16 w-full max-md:mt-10 max-md:max-w-full">
         <div className="flex max-md:flex-col gap-4 justify-center">

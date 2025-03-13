@@ -49,7 +49,7 @@ export const Transformation: React.FC = () => {
   return (
     <>
       <h2 className="self-center mt-52 text-5xl font-bold leading-tight text-red-400 max-md:mt-10 max-md:max-w-full">
-        Chứng kiến sự khác biệt
+        Witness the difference
       </h2>
 
       <div className="flex flex-wrap gap-10 self-center mt-12 max-w-full text-base font-medium text-red-400 w-[683px] max-md:mt-10">
@@ -120,7 +120,7 @@ const TransformationSet: React.FC<TransformationSetProps> = ({
           className="object-contain w-full aspect-[0.77] rounded-[100px_100px_100px_0px]"
           alt="Before transformation"
         />
-        <div className="self-center mt-4">Trước</div>
+        <div className="self-center mt-4">Before</div>
       </div>
       <div className="flex flex-col self-stretch my-auto rounded-none w-[239px]">
         <img
@@ -129,7 +129,7 @@ const TransformationSet: React.FC<TransformationSetProps> = ({
           className="object-contain w-full aspect-[0.77] rounded-[100px_0px_0px_0px]"
           alt="After transformation"
         />
-        <div className="self-center mt-4">Sau</div>
+        <div className="self-center mt-4">After</div>
       </div>
     </div>
   );
@@ -140,16 +140,18 @@ const CallToAction: React.FC = () => {
     <div className="flex flex-wrap gap-5 justify-between self-center px-20 py-14 mt-40 max-w-full text-red-400 bg-red-100 rounded-[200px] w-[1200px] max-md:px-5 max-md:mt-10">
       <div className="max-md:max-w-full">
         <h2 className="text-5xl font-bold leading-tight max-md:max-w-full">
-          Mong muốn sở hữu làn da tươi tắn?
+          Dreaming of a fresh and radiant skin?
         </h2>
         <p className="mt-2.5 text-base font-medium max-md:max-w-full">
-          Đặt lịch tư vấn chăm sóc da cá nhân của bạn ngay hôm nay và tìm lại vẻ
-          sáng ngời tự nhiên.
+          Book your personalized skincare consultation today and rediscover your
+          natural radiance.
         </p>
       </div>
       <button className="flex gap-1.5 justify-center items-center px-10 py-3 my-auto text-base font-bold bg-rose-50 hover:bg-rose-200 duration-200 rounded-none max-md:px-5">
         <Call />
-        <span className="self-stretch my-auto w-[182px]">Đặt lịch ngay</span>
+        <span className="self-stretch my-auto w-[250px]">
+          Make an appointment now
+        </span>
       </button>
     </div>
   );
@@ -158,9 +160,9 @@ const CallToAction: React.FC = () => {
 const Stats: React.FC = () => {
   return (
     <div className="flex flex-wrap gap-10 items-center self-center mt-36 text-center text-red-400 max-md:mt-10 max-md:max-w-full">
-      <StatItem number="5,000+" description="Khách hàng tin dùng." />
-      <StatItem number="10+" description="Năm kinh nghiệm." />
-      <StatItem number="20,000+" description="Liệu trình thành công." />
+      <StatItem number="5,000+" description="Satisfied Customers" />
+      <StatItem number="10+" description="Years of experience" />
+      <StatItem number="20,000+" description="Effective Treatment" />
     </div>
   );
 };

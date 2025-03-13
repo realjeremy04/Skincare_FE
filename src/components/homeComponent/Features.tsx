@@ -5,21 +5,21 @@ export const Features = () => {
   const features = [
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/9cd43cff58fa6ee0a708fbe7b3be62edc984447b1c1cc3cb456834a9e4342978?placeholderIfAbsent=true",
-      title: "Chăm sóc Chuyên Biệt",
+      title: "Specialized Care",
       description:
-        "Chúng tôi tin rằng làn da khỏe mạnh bắt đầu từ sự chăm sóc chuyên biệt và tận tâm.",
+        "We believe that healthy skin begins with specialized and dedicated care.",
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/fd5f67a02f4c2be44cf3c113ee0ba72e51c60111e309b0194f06456f117df1cc?placeholderIfAbsent=true",
-      title: "Vẻ Đẹp Rạng Ngời",
+      title: "Radiant Beauty",
       description:
-        "Crystal Care mang đến vẻ đẹp rạng ngời và sức khỏe tối ưu cho làn da của bạn.",
+        "Crystal Care brings radiant beauty and optimal health to your skin.",
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/ae85332a82fe41ff3de5a5adf536957fc835abcce505d5ca5549da9f4a846205?placeholderIfAbsent=true",
-      title: "Sức Khỏe Tối Ưu",
+      title: "Optimal Skin Health",
       description:
-        "Hành trình Crystal Care của chúng tôi bắt đầu với sứ mệnh mang đến sức khỏe tối ưu cho làn da.",
+        "Our Crystal Care journey begins with a mission to deliver optimal skin health.",
     },
   ];
 
@@ -34,18 +34,18 @@ export const Features = () => {
         />
         <div className="flex flex-col mt-8 w-full max-md:max-w-full">
           <h2 className="text-4xl font-bold leading-tight max-md:max-w-full">
-            Hướng dẫn tuyệt vời để có vẻ đẹp rạng rỡ
+            The Ultimate Guide to Radiant Beauty
           </h2>
           <p className="self-center mt-2.5 text-lg font-medium leading-6 w-[513px] max-md:max-w-full">
-            Tại Crystal Care, chúng tôi tin rằng làn da khỏe mạnh bắt đầu từ sự
-            chăm sóc chuyên biệt và tận tâm, mang đến vẻ đẹp rạng ngời và sức
-            khỏe tối ưu cho làn da của bạn.
+            At Crystal Care, we believe that healthy skin begins with
+            specialized and dedicated care, bringing radiant beauty and optimal
+            health to your skin.
           </p>
         </div>
       </div>
 
       <button className="mt-4 flex items-center bg-red-400 text-white font-bold text-base px-4 py-2 rounded-md rounded-se-3xl hover:bg-red-500 transition-all duration-300 group">
-        <span className="mr-2">Tìm hiểu thêm</span>
+        <span className="mr-2">Learn more</span>
         <span className="transform transition-transform duration-300 group-hover:translate-x-2">
           <ChevronRight />
         </span>
