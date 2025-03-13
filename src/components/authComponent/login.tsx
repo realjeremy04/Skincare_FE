@@ -42,7 +42,7 @@ const Login = () => {
       >
         <Button
           variant="text"
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
           sx={{
             textTransform: "none",
             fontSize: "1rem",
@@ -51,7 +51,7 @@ const Login = () => {
             "&:hover": { textDecoration: "underline" },
           }}
         >
-          Trang chủ
+          Home
         </Button>
       </Box>
 
@@ -73,11 +73,11 @@ const Login = () => {
           variant="h4"
           sx={{ mb: 1, fontWeight: "bold", color: "#FF909A" }}
         >
-          Chào mừng trở lại
+          Welcome back
         </Typography>
 
         <Typography variant="body2" sx={{ mb: 1, color: "#FF909A" }}>
-          Đăng nhập để tiếp tục
+          Login to continue
         </Typography>
 
         <LoginForm

@@ -33,16 +33,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
   const router = useRouter();
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Email không hợp lệ")
-      .required("Email là bắt buộc"),
+    email: Yup.string().email("Email is invalid").required("Email is required"),
     password: Yup.string()
-      .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+      .min(8, "Password needs to have 8 characters")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
         "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt"
       )
-      .required("Mật khẩu là bắt buộc"),
+      .required("Password is required"),
   });
 
   const formik = useFormik({
@@ -58,7 +56,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         setError("");
         // Thực hiện logic đăng nhập ở đây
       } catch (err) {
-        setError("Đăng nhập thất bại. Vui lòng thử lại.");
+        setError("Logn failed. Please try again");
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +101,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         margin="normal"
         fullWidth
         name="password"
-        label="Mật khẩu"
+        label="Password"
         type={showPassword ? "text" : "password"}
         id="password"
         autoComplete="current-password"
@@ -136,21 +134,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
         }}
       />
 
-      <div className="flex justify-end">
-        <Button
-          sx={{
-            color: "#E26169",
-            "&:hover": {
-              color: "#FF909A",
-              textDecoration: "underline",
-            },
-          }}
-          onClick={() => router.push("/forgotPass")}
-        >
-          Quên mật khẩu
-        </Button>
-      </div>
-
       <Button
         type="submit"
         fullWidth
@@ -166,14 +149,10 @@ const LoginForm: React.FC<LoginFormProps> = ({
         }}
         disabled={isLoading}
       >
-        {isLoading ? (
-          <CircularProgress size={24} color="inherit" />
-        ) : (
-          "Đăng nhập"
-        )}
+        {isLoading ? <CircularProgress size={24} color="inherit" /> : "Login"}
       </Button>
 
-      <div className="mb-3 text-center text-red-400">Hoặc</div>
+      <div className="mb-3 text-center text-red-400">Or</div>
 
       <Button
         type="button"
@@ -189,7 +168,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         }}
         onClick={() => router.push("/register")}
       >
-        Đăng ký
+        Register
       </Button>
     </Box>
   );

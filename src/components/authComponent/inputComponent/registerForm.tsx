@@ -6,18 +6,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email("Email không hợp lệ")
-    .required("Vui lòng nhập email"),
+  email: Yup.string().email("Email is invalid").required("Email is required"),
   username: Yup.string()
-    .min(3, "Tên người dùng phải có ít nhất 3 ký tự")
-    .required("Vui lòng nhập tên người dùng"),
+    .min(3, "Username need to be at least 3 characters")
+    .required("Username is required"),
   password: Yup.string()
-    .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
-    .required("Vui lòng nhập mật khẩu"),
+    .min(6, "Password need to be at least 6 characters")
+    .required("Password is required"),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
-    .required("Vui lòng xác nhận mật khẩu"),
+    .oneOf([Yup.ref("password")], "Password is not match")
+    .required("Please confirm your password"),
 });
 
 const RegisterForm = () => {
@@ -63,7 +61,7 @@ const RegisterForm = () => {
       <TextField
         fullWidth
         margin="normal"
-        label="Tên người dùng"
+        label="Username"
         name="username"
         value={formik.values.username}
         onChange={formik.handleChange}
@@ -83,7 +81,7 @@ const RegisterForm = () => {
       <TextField
         fullWidth
         margin="normal"
-        label="Mật khẩu"
+        label="Password"
         name="password"
         type="password"
         value={formik.values.password}
@@ -104,7 +102,7 @@ const RegisterForm = () => {
       <TextField
         fullWidth
         margin="normal"
-        label="Xác nhận mật khẩu"
+        label="Confirm password"
         name="confirmPassword"
         type="password"
         value={formik.values.confirmPassword}
@@ -144,7 +142,7 @@ const RegisterForm = () => {
           },
         }}
       >
-        Đăng ký
+        Register
       </Button>
     </Box>
   );

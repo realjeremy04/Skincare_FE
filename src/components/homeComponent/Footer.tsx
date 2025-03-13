@@ -33,14 +33,14 @@ export const Footer = () => {
 
                 <div className="flex flex-wrap flex-auto gap-10 max-md:max-w-full">
                   <p className="font-medium text-red-50 max-md:max-w-full">
-                    Tại Crystal Care, chúng tôi tận tâm giúp bạn đạt được làn da
-                    rạng rỡ, khỏe mạnh thông qua các liệu pháp chăm sóc da được
-                    cá nhân hóa và hướng dẫn chuyên nghiệp.
+                    At Crystal Care, we are dedicated to helping you achieve
+                    radiant, healthy skin through personalized skincare
+                    treatments and expert guidance.
                   </p>
 
                   <button className="flex gap-5 justify-center items-center px-8 py-3 my-auto font-bold text-red-400 bg-rose-50 hover:bg-rose-100 duration-200 rounded-none max-md:px-5">
                     <Phone sx={{ color: "#f87171" }} />
-                    <span>Đặt lịch ngay</span>
+                    <span>Book an appointment now</span>
                   </button>
                 </div>
               </div>
@@ -60,10 +60,10 @@ export const Footer = () => {
       <div className="flex flex-wrap gap-5 justify-center self-center mt-2.5 max-w-full text-base font-medium w-[1200px]">
         <div className="flex gap-10 items-center text-white rounded-[50px]">
           <Link href="/terms" className="opacity-80 hover:opacity-100">
-            Điều khoản & Điều kiện
+            Terms & Conditions
           </Link>
           <Link href="/privacy" className="opacity-80 hover:opacity-100">
-            Chính sách Bảo mật
+            Privacy Policy
           </Link>
         </div>
       </div>

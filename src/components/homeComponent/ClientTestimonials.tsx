@@ -115,7 +115,7 @@ const ClientTestimonials = () => {
           <div className="flex z-10 flex-col items-center mr-0 w-full max-md:max-w-full">
             <div className="flex flex-col items-center self-stretch py-24 pl-4 w-full bg-red-50 max-md:max-w-full">
               <h2 className="ml-10 text-4xl font-bold leading-tight text-red-400 max-md:max-w-full">
-                Nhận xét từ Khách hàng
+                Customer Testimonials
               </h2>
               <div className="flex flex-wrap gap-8 items-center self-start mt-12 mr-0 max-md:mt-10 max-md:max-w-full">
                 <TestimonialCard {...testimonials[currentIndex]} />
@@ -136,7 +136,7 @@ const ClientTestimonials = () => {
               </div>
             </div>
             <h2 className="mt-36 text-4xl font-bold leading-tight text-center text-red-400 max-md:mt-10">
-              Nhà tài trợ
+              Sponsor
             </h2>
             <div className="flex flex-wrap gap-12 items-center mt-12 ml-20 max-w-full text-xl font-bold w-[590px] max-md:mt-10">
               {sponsors.map((sponsor, index) => (

@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import { Header } from "../../components/Header";
-import { Features } from "../../components/Features";
-import { Services } from "../../components/Services";
-import { Footer } from "../../components/Footer";
-import { Transformation } from "../../components/Transformation";
-import ClientTestimonials from "../../components/ClientTestimonials";
-import Hero from "../../components/Hero";
-import { SkincareInsights } from "../../components/SkincareInsight";
+import { Header } from "../../components/homeComponent/Header";
+import { Features } from "../../components/homeComponent/Features";
+import { Services } from "../../components/homeComponent/Services";
+import { Footer } from "../../components/homeComponent/Footer";
+import { Transformation } from "../../components/homeComponent/Transformation";
+import ClientTestimonials from "../../components/homeComponent/ClientTestimonials";
+import Hero from "../../components/homeComponent/Hero";
+import { SkincareInsights } from "../../components/homeComponent/SkincareInsight";
 
 export const HomePage = () => {
   return (

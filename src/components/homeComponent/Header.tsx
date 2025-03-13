@@ -18,13 +18,13 @@ export const Header = () => {
       <div className="flex flex-wrap gap-10 my-auto max-md:max-w-full">
         <nav className="flex gap-10 items-center my-auto font-medium text-lg">
           <a href="#" className="self-stretch my-auto hover:underline">
-            Trang chủ
+            Home
           </a>
           <a href="#" className="self-stretch my-auto hover:underline">
-            Về chúng tôi
+            About us
           </a>
           <a href="#" className="self-stretch my-auto hover:underline">
-            Các dịch vụ
+            Services
           </a>
         </nav>
         <div className="flex justify-center items-center border-l-2 border-l-red-400">
@@ -32,13 +32,13 @@ export const Header = () => {
             className="flex gap-1.5 justify-center items-center p-2.5 hover:underline cursor-pointer"
             onClick={() => router.push("/login")}
           >
-            Đăng nhập
+            Login
           </div>
           <div
             className="flex gap-1.5 justify-center items-center p-2.5 hover:underline cursor-pointer"
             onClick={() => router.push("/register")}
           >
-            Đăng ký
+            Register
           </div>
         </div>
       </div>
