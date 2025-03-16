@@ -37,6 +37,9 @@ const validationSchema = Yup.object({
         year <= new Date().getFullYear()
       );
     }),
+  phone: Yup.string()
+    .min(6, "Phone need to be at least 10 digits")
+    .required("Phone is required"),
 });
 
 const RegisterForm = () => {
@@ -49,6 +52,7 @@ const RegisterForm = () => {
       password: "",
       confirmPassword: "",
       dob: "",
+      phone: ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -62,6 +66,7 @@ const RegisterForm = () => {
           username: values.username,
           password: values.password,
           dob: dobFormatted,
+          phone: values.phone
         };
         const response = await api.post("/account/register", payload);
         if (response.status === 201) {
@@ -169,6 +174,31 @@ const RegisterForm = () => {
         }
         helperText={
           formik.touched.confirmPassword && formik.errors.confirmPassword
+        }
+        sx={{
+          "& .MuiInputLabel-root": { color: "E26169" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": { borderColor: "#FEE0D9" },
+            "&.Mui-focused fieldset": { borderColor: "#E26169" },
+          },
+          "& .MuiFormHelperText-root": { color: "red" },
+        }}
+      />
+
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Phone number"
+        name="phone"
+        value={formik.values.phone}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={
+          formik.touched.phone &&
+          Boolean(formik.errors.phone)
+        }
+        helperText={
+          formik.touched.phone && formik.errors.phone
         }
         sx={{
           "& .MuiInputLabel-root": { color: "E26169" },
