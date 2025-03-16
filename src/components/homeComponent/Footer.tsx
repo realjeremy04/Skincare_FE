@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -215,7 +217,7 @@ const ContactInfo = () => (
         <span className="opacity-90">info@example.com</span>
       </div>
       <div className="flex gap-1.5 self-stretch mt-4 w-full">
-        <div className="flex overflow-hidden justify-between items-center self-start px-1 pt-2 pb-1">
+        <div className="flex overflow-hidden justify-between items-center text-red-50 self-start px-1 pt-2 pb-1">
           <LocationOnOutlined />
         </div>
         <address className="text-base font-medium text-red-50 opacity-90 not-italic">

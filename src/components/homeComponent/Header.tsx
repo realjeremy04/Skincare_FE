@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
 
@@ -6,7 +8,10 @@ export const Header = () => {
 
   return (
     <div className="flex flex-wrap gap-5 justify-between py-4 px-6 self-center w-full text-base bg-stone-50 text-red-400 max-md:max-w-full">
-      <div className="flex justify-center items-center gap-1 font-medium">
+      <div
+        className="flex justify-center items-center gap-1 font-medium"
+        onClick={() => router.push("/")}
+      >
         <img
           loading="lazy"
           src="/Logo-Noname.png"
@@ -17,13 +22,10 @@ export const Header = () => {
       </div>
       <div className="flex flex-wrap gap-10 my-auto max-md:max-w-full">
         <nav className="flex gap-10 items-center my-auto font-medium text-lg">
-          <a href="#" className="self-stretch my-auto hover:underline">
+          <a href="/" className="self-stretch my-auto hover:underline">
             Home
           </a>
-          <a href="#" className="self-stretch my-auto hover:underline">
-            About us
-          </a>
-          <a href="#" className="self-stretch my-auto hover:underline">
+          <a href="/treatment" className="self-stretch my-auto hover:underline">
             Services
           </a>
         </nav>
