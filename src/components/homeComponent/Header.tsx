@@ -20,7 +20,7 @@ export const Header = () => {
           <a href="#" className="self-stretch my-auto hover:underline">
             Home
           </a>
-          <a href="#" className="self-stretch my-auto hover:underline">
+          <a href="/about" className="self-stretch my-auto hover:underline">
             About us
           </a>
           <a href="#" className="self-stretch my-auto hover:underline">
