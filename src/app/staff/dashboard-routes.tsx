@@ -24,7 +24,7 @@ const adminRoutes = [
   },
   {
     segment: "staff/accounts",
-    title: "Customers",
+    title: "Accounts",
     icon: <PeopleAltOutlinedIcon />,
     children: [
       {
@@ -34,7 +34,7 @@ const adminRoutes = [
       },
       {
         segment: "customers",
-        title: "Services",
+        title: "Customers",
         icon: <PersonOutlineOutlinedIcon />,
       },
     ],
@@ -48,26 +48,6 @@ const adminRoutes = [
     segment: "staff/feedbacks",
     title: "Feedbacks",
     icon: <FeedbackOutlinedIcon />,
-  },
-  {
-    segment: "staff/roadmap",
-    title: "Roadmap",
-    icon: <TimelineOutlinedIcon />,
-  },
-  {
-    segment: "staff/questions",
-    title: "Questions",
-    icon: <QuestionAnswerOutlinedIcon />,
-  },
-  {
-    segment: "staff/scoreband",
-    title: "Scoreband",
-    icon: <LeaderboardOutlinedIcon />,
-  },
-  {
-    segment: "staff/slots",
-    title: "Slots",
-    icon: <ScheduleOutlinedIcon />,
   },
   {
     segment: "staff/transactions",

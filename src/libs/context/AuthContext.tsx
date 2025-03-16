@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/account/login", { email, password });
       const data = response.data;
       setUser(data.user);
-      router.push("/staff/services");
+      router.push("/staff/appointments");
     } catch (e: unknown) {
       console.error("Login failed:", e);
       throw e; 

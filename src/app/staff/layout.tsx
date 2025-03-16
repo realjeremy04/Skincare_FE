@@ -8,14 +8,16 @@ import { Box, createTheme } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import CustomerAccountMenu from "@/libs/components/dashboard/CustomerAccountMenu";
 import Image from "next/image";
+import useAuth from "@/libs/context/AuthContext";
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { user, setUser } = useAuth();
   const [session, setSession] = useState({
     user: {
-      name: "Bharat Kashyap",
-      email: "bharatkashyap@outlook.com",
+      name: user?.username,
+      email: user?.email,
       image: "https://avatars.githubusercontent.com/u/19550456",
     },
   });
@@ -37,20 +39,19 @@ export default function Layout({
 
   const authentication = useMemo(() => {
     return {
-      signIn: () => {
+      signIn: () => {},
+      signOut: () => {
+        setUser(null);
         setSession({
           user: {
-            name: "Bharat Kashyap",
-            email: "bharatkashyap@outlook.com",
-            image: "https://avatars.githubusercontent.com/u/19550456",
+            name: undefined,
+            email: undefined,
+            image: "",
           },
         });
       },
-      signOut: () => {
-        setSession(null);
-      },
     };
-  }, []);
+  }, [setUser]);
 
   // Don't render until client-side to avoid hydration mismatch
   if (!mounted) {
