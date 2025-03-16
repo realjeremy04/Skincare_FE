@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
+import Swal from "sweetalert2";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -28,8 +29,11 @@ export const ContactPage = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("Form submitted:", values);
-      alert("Thank you for your message! We’ll get back to you soon.");
+      Swal.fire({
+        title: "Success!",
+        text: "Thank you for your message! We’ll get back to you soon.",
+        icon: "success"
+      });
       formik.resetForm();
     },
   });
