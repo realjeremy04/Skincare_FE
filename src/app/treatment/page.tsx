@@ -58,6 +58,7 @@ const ServiceCard: React.FC<Services> = ({
                 : "bg-gray-300 cursor-not-allowed opacity-70"
             }`}
             disabled={!isActive}
+            onClick={() => router.push(`/booking/${_id}`)}
           >
             Book Now
           </button>

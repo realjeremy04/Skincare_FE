@@ -16,8 +16,9 @@ import { Slot } from "@/types/slots";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useBookingContext } from "@/global/bookingContext";
+import Swal from "sweetalert2";
 
 export const BookingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +34,7 @@ export const BookingPage = () => {
     null
   );
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(dayjs().add(3, "day")); // Đổi mặc định thành ngày hiện tại + 2
 
   // Fetch service details, therapists, and slots on mount
   useEffect(() => {
@@ -103,11 +104,53 @@ export const BookingPage = () => {
         therapist: selectedTherapist,
         date: selectedSlot.startTime,
         slot: selectedSlot,
-        notes: "", // Gán mặc định là chuỗi rỗng vì không cần notes
+        notes: "",
       };
-      updateBookingData(bookingData); // Lưu dữ liệu vào BookingContext
-      router.push("/payment"); // Chuyển hướng đến trang payment
+      updateBookingData(bookingData);
+      router.push("/payment");
     }
+  };
+
+  // Hàm kiểm tra ngày có hợp lệ không
+  const isDateDisabled = (date: Dayjs) => {
+    const today = dayjs();
+    const minAllowedDate = today.add(2, "day");
+    const isBeforeMinDate = date.isBefore(minAllowedDate, "day");
+    const isSaturday = date.day() === 6;
+    return isBeforeMinDate || isSaturday;
+  };
+
+  // Xử lý khi người dùng thay đổi ngày
+  const handleDateChange = (newValue: Dayjs | null) => {
+    if (!newValue) return;
+
+    const today = dayjs();
+    const minAllowedDate = today.add(2, "day");
+
+    if (newValue.isBefore(minAllowedDate, "day")) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Date",
+        text: `You can only book appointments starting from ${minAllowedDate.format(
+          "MMMM D, YYYY"
+        )}.`,
+        confirmButtonColor: "#f87171",
+      });
+      return;
+    }
+
+    if (newValue.day() === 6) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Date",
+        text: "Bookings are not available on Saturdays.",
+        confirmButtonColor: "#f87171",
+      });
+      return;
+    }
+
+    setSelectedDate(newValue);
+    setSelectedSlot(null); // Reset slot khi đổi ngày
   };
 
   return (
@@ -324,8 +367,14 @@ export const BookingPage = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateCalendar
                     value={selectedDate}
-                    onChange={(newValue) => setSelectedDate(newValue)}
-                    minDate={dayjs()}
+                    onChange={handleDateChange}
+                    minDate={dayjs().add(2, "day")}
+                    shouldDisableDate={isDateDisabled}
+                    sx={{
+                      "& .MuiPickersDay-root.Mui-disabled": {
+                        color: "#d1d5db",
+                      },
+                    }}
                   />
                 </LocalizationProvider>
               </div>
