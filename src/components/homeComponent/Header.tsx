@@ -17,15 +17,30 @@ export const Header = () => {
       </div>
       <div className="flex flex-wrap gap-10 my-auto max-md:max-w-full">
         <nav className="flex gap-10 items-center my-auto font-medium text-lg">
-          <a href="#" className="self-stretch my-auto hover:underline">
+          <div
+            className="self-stretch my-auto hover:underline cursor-pointer"
+            onClick={() => router.push("/")}
+          >
             Home
-          </a>
-          <a href="/about" className="self-stretch my-auto hover:underline">
+          </div>
+          <div
+            className="self-stretch my-auto hover:underline cursor-pointer"
+            onClick={() => router.push("/about")}
+          >
             About us
-          </a>
-          <a href="#" className="self-stretch my-auto hover:underline">
+          </div>
+          <div
+            className="self-stretch my-auto hover:underline cursor-pointer"
+            onClick={() => router.push("/contact")}
+          >
+            Contact
+          </div>
+          <div
+            className="self-stretch my-auto hover:underline cursor-pointer"
+            onClick={() => router.push("/services")}
+          >
             Services
-          </a>
+          </div>
         </nav>
         <div className="flex justify-center items-center border-l-2 border-l-red-400">
           <div
