@@ -39,10 +39,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
     email: Yup.string().email("Email is invalid").required("Email is required"),
     password: Yup.string()
       .min(6, "Password needs to have 6 characters")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-        "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt"
-      )
       .required("Password is required"),
   });
 
@@ -64,7 +60,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
           title: "Login Successful!",
           icon: "success",
         });
-      } catch (err) {
+      } catch (err: unknown) {
+        console.error(err);
         setError("Login failed. Please try again");
         Swal.fire({
           title: "Error",
