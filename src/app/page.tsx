@@ -1,5 +1,5 @@
 // 'use client';  // Mark this as a Client Component
-// import { usePathname } from 'next/navigation';  
+// import { usePathname } from 'next/navigation';
 // import { AppProps } from 'next/app';
 // import { JSX } from 'react';
 // import HomePage from './Homepage/HomePage';
@@ -27,31 +27,39 @@
 
 // export default MyApp;
 
+"use client";
+import { usePathname } from "next/navigation";
+import { AppProps } from "next/app";
+import QuizPage from "./quizPage/page";
+import HomePage from "./Homepage/HomePage";
+import ContactPage from "./contact/page";
+import QuizHistoryPage from "./quizHistory/page";
+import QuizHistoryDetailPage from "./quizHistory/[id]/page";
 
-'use client';
-import { usePathname } from 'next/navigation';
-import { AppProps } from 'next/app';
-
-import HomePage from './Homepage/HomePage';
-import ContactPage from './contact/page';
-import { AuthProvider } from '@/libs/context/AuthContext';
-import { JSX } from 'react';
+import { AuthProvider } from "@/libs/context/AuthContext";
+import { JSX } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
-
+  const quizHistoryMatch = pathname?.match(/^\/quizHistory\/(.+)$/);
+  const quizHistoryId = quizHistoryMatch ? quizHistoryMatch[1] : null;
   const routes: { [key: string]: JSX.Element } = {
-    '/': <HomePage />,
-    '/contact': <ContactPage />,
+    "/": <HomePage />,
+    "/contact": <ContactPage />,
+    "/quizPage": <QuizPage />,
+    "/quizHistory": <QuizHistoryPage />,
+    ...(quizHistoryId && {
+      [`/quizHistory/${quizHistoryId}`]: (
+        <QuizHistoryDetailPage params={{ id: quizHistoryId }} />
+      ),
+    }),
   };
 
   const CurrentPage = routes[pathname] || <Component {...pageProps} />; // Fallback to default Component
 
   return (
     <AuthProvider>
-      <div>
-        {CurrentPage}
-      </div>
+      <div>{CurrentPage}</div>
     </AuthProvider>
   );
 }
