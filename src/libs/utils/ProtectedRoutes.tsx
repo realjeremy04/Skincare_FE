@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { useRouter } from "next/navigation";
 import useAuth from "../context/AuthContext";
 import { role } from "../constants/role";
 import { ReactNode } from "react";
@@ -9,9 +11,9 @@ interface ProtectedRoutesProps {
 
 export const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
   const router = useRouter();
-  const { accessToken, user } = useAuth();
+  const { user } = useAuth();
 
-  if (!accessToken || !user) {
+  if ( !user) {
     router.push("/login");
   }
 

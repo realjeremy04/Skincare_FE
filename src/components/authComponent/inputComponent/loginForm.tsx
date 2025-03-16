@@ -15,6 +15,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import useAuth from "@/libs/context/AuthContext";
+import Swal from "sweetalert2";
 
 interface LoginFormProps {
   isLoading: boolean;
@@ -31,11 +33,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { login } = useAuth(); // Get the login function from AuthContext
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Email is invalid").required("Email is required"),
     password: Yup.string()
-      .min(8, "Password needs to have 8 characters")
+      .min(6, "Password needs to have 6 characters")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
         "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt"
@@ -54,9 +57,20 @@ const LoginForm: React.FC<LoginFormProps> = ({
       try {
         setIsLoading(true);
         setError("");
-        // Thực hiện logic đăng nhập ở đây
+        // Use the login function from AuthContext
+        await login(values.email, values.password);
+        // Success is handled in AuthContext (redirects to /staff/services)
+        Swal.fire({
+          title: "Login Successful!",
+          icon: "success",
+        });
       } catch (err) {
-        setError("Logn failed. Please try again");
+        setError("Login failed. Please try again");
+        Swal.fire({
+          title: "Error",
+          text: "Login failed. Please try again",
+          icon: "error",
+        });
       } finally {
         setIsLoading(false);
       }

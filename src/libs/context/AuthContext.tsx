@@ -1,15 +1,17 @@
-import { useRouter } from "next/router";
-import { createContext, useContext, useState } from "react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { createContext, useContext, useState, useEffect } from "react";
 import { ReactNode } from "react";
 import { User } from "../types/login";
+import api from "../hooks/axiosInstance";
+
 
 // Define type for the auth context
 interface AuthContextType {
-  accessToken: string | null;
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  setAccessToken: (token: string | null) => void;
   setUser: (user: User | null) => void;
 }
 
@@ -18,56 +20,53 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const [accessToken, setAccessToken] = useState(
-    localStorage.getItem("accessToken")
-  );
-  const [user, setUser] = useState<User | null>(() => {
-    const userData = localStorage.getItem("user");
-    return userData ? JSON.parse(userData) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+
+  // Fetch user data on mount to initialize the state
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await api.get("/account/profile"); 
+        setUser(response.data.user);
+      } catch (e: unknown) {
+        console.error("Failed to fetch user:", e);
+        setUser(null);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-      localStorage.setItem("accessToken", data.user.token);
-      setAccessToken(data.user.token);
-
-      delete data.user.token;
-      localStorage.setItem("user", JSON.stringify(data.user));
+      const response = await api.post("/account/login", { email, password });
+      const data = response.data;
       setUser(data.user);
-
       router.push("/staff/services");
     } catch (e: unknown) {
-      console.log(e);
+      console.error("Login failed:", e);
+      throw e; 
     }
   };
 
-  const logout = () => {
-    setAccessToken(null);
-    setUser(null);
-
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    
-    router.push("/login");
+  const logout = async () => {
+    try {
+      // Call logout endpoint if your backend requires it to invalidate the cookie
+      await api.post("/account/logout");
+    } catch (e: unknown) {
+      console.error("Logout failed:", e);
+    } finally {
+      setUser(null);
+      router.push("/");
+    }
   };
 
   const values = {
-    accessToken,
     user,
     login,
     logout,
-    setAccessToken,
     setUser,
   };
+
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
@@ -75,11 +74,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
  * Custom hook that provides access to authentication context
  *
  * @returns {AuthContextType} Authentication context object
- * @returns {string|null} returns.accessToken - The current JWT access token
  * @returns {Object|null} returns.user - The current authenticated user data
  * @returns {Function} returns.login - Async function to log in (email: string, password: string) => Promise<void>
  * @returns {Function} returns.logout - Function to log out the current user
- * @returns {Function} returns.setAccessToken - State setter for access token
  * @returns {Function} returns.setUser - State setter for user data
  *
  * @example
