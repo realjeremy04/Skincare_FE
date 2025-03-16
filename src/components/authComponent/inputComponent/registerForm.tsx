@@ -8,8 +8,6 @@ import * as Yup from "yup";
 import api from "@/libs/hooks/axiosInstance";
 import Swal from "sweetalert2";
 
-
-
 const validationSchema = Yup.object({
   email: Yup.string().email("Email is invalid").required("Email is required"),
   username: Yup.string()
@@ -17,17 +15,9 @@ const validationSchema = Yup.object({
     .required("Username is required"),
   password: Yup.string()
     .min(6, "Password need to be at least 6 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt"
-    )
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Password is not match")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt"
-    )
     .required("Please confirm your password"),
   dob: Yup.string()
     .matches(
@@ -48,8 +38,6 @@ const validationSchema = Yup.object({
       );
     }),
 });
-
-
 
 const RegisterForm = () => {
   const [error, setError] = useState("");
@@ -76,7 +64,7 @@ const RegisterForm = () => {
           dob: dobFormatted,
         };
         const response = await api.post("/account/register", payload);
-        if (response.status === 200) {
+        if (response.status === 201) {
           router.push("/login");
           Swal.fire({
             title: "Register Successful!",
