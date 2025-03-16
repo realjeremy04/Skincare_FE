@@ -9,6 +9,7 @@ import { useMemo, useState, useEffect } from "react";
 import CustomerAccountMenu from "@/libs/components/dashboard/CustomerAccountMenu";
 import Image from "next/image";
 import useAuth from "@/libs/context/AuthContext";
+import { ProtectedRoutes } from "@/libs/utils/ProtectedRoutes";
 
 export default function Layout({
   children,
@@ -60,38 +61,40 @@ export default function Layout({
 
   return (
     <>
-      <AppCacheProvider>
-        <NextAppProvider
-          navigation={adminRoutes}
-          authentication={authentication}
-          branding={{
-            logo: (
-              <Image
-                src="/Logo-Noname.ico"
-                alt="Logo"
-                width={50}
-                height={100}
-              />
-            ),
-            title: "",
-            homeUrl: "/",
-          }}
-          session={session}
-          theme={theme}
-        >
-          <DashboardLayout
-            slotProps={{
-              toolbarAccount: {
-                slots: { popoverContent: CustomerAccountMenu },
-              },
+      <ProtectedRoutes>
+        <AppCacheProvider>
+          <NextAppProvider
+            navigation={adminRoutes}
+            authentication={authentication}
+            branding={{
+              logo: (
+                <Image
+                  src="/Logo-Noname.ico"
+                  alt="Logo"
+                  width={50}
+                  height={100}
+                />
+              ),
+              title: "",
+              homeUrl: "/",
             }}
+            session={session}
+            theme={theme}
           >
-            <Box sx={{ width: "100%", height: "100vh" }}>
-              <PageContainer>{children}</PageContainer>
-            </Box>
-          </DashboardLayout>
-        </NextAppProvider>
-      </AppCacheProvider>
+            <DashboardLayout
+              slotProps={{
+                toolbarAccount: {
+                  slots: { popoverContent: CustomerAccountMenu },
+                },
+              }}
+            >
+              <Box sx={{ width: "100%", height: "100vh" }}>
+                <PageContainer>{children}</PageContainer>
+              </Box>
+            </DashboardLayout>
+          </NextAppProvider>
+        </AppCacheProvider>
+      </ProtectedRoutes>
     </>
   );
 }
