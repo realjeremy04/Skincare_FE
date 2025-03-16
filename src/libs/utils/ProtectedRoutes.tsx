@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useAuth from "../context/AuthContext";
+import useAuth from "../context/AuthContext"; // Adjust path
 import { role } from "../constants/role";
 import { ReactNode, useEffect } from "react";
 
@@ -11,18 +11,25 @@ interface ProtectedRoutesProps {
 
 export const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
+    if (loading) return; // Wait until loading is done
+
     if (!user) {
       router.push("/login");
+      return;
     }
-    
-    // Uncomment if you need this role-based check
-    if (![role.ADMIN, role.STAFF, role.THERAPIST].includes(user?.role as string)) {
+
+    // Optional: Uncomment for role-based routing
+    if (![role.ADMIN, role.STAFF, role.THERAPIST].includes(user.role as string)) {
       router.push("/");
     }
-  }, [router, user]);
+  }, [user, loading, router]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Optional: Better UX
+  }
 
   return children;
 };
