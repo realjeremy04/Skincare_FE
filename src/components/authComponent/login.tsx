@@ -9,7 +9,6 @@ import {
   useMediaQuery,
   Button,
 } from "@mui/material";
-import { Home } from "@mui/icons-material";
 import LoginForm from "./inputComponent/loginForm";
 import { useRouter } from "next/navigation";
 
