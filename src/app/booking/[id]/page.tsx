@@ -17,15 +17,17 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { useBookingContext } from "@/global/bookingContext";
 
 export const BookingPage = () => {
   const { id } = useParams<{ id: string }>();
   const { serviceDetail } = useService();
   const { therapist } = useTherapist();
-  const { shift } = useShift(); // Shifts are occupied slots
-  const { slot } = useSlot(); // All possible slots
+  const { shift } = useShift();
+  const { slot } = useSlot();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { updateBookingData } = useBookingContext();
 
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
     null
@@ -36,7 +38,7 @@ export const BookingPage = () => {
   // Fetch service details, therapists, and slots on mount
   useEffect(() => {
     if (!id) return;
-    dispatch(getAllSlotThunk()); // Fetch all possible slots
+    dispatch(getAllSlotThunk());
     dispatch(getDetailServiceThunk(id));
     dispatch(getAllTherapistByServiceThunk(id));
   }, [dispatch, id]);
@@ -51,12 +53,12 @@ export const BookingPage = () => {
   // Handle therapist selection
   const handleTherapistSelect = (therapist: Therapist) => {
     setSelectedTherapist(therapist);
-    setSelectedSlot(null); // Reset slot when therapist changes
+    setSelectedSlot(null);
   };
 
   // Handle slot selection
   const handleSlotSelect = (slot: Slot) => {
-    const timezoneOffset = new Date().getTimezoneOffset(); // Get timezone offset in minutes
+    const timezoneOffset = new Date().getTimezoneOffset();
     const slotData = {
       _id: slot._id,
       slotNum: slot.slotNum,
@@ -94,15 +96,17 @@ export const BookingPage = () => {
 
   // Handle Book Now click
   const handleBookNow = () => {
-    if (selectedTherapist && selectedSlot) {
+    if (selectedTherapist && selectedSlot && serviceDetail) {
       const bookingData = {
-        therapistId: selectedTherapist._id,
-        slotsId: selectedSlot._id,
-        serviceId: id,
-        notes: "", // Placeholder; add input field if needed
-        date: selectedSlot.startTime, // Combines selected date with slot start time
+        serviceDetail,
+        price: serviceDetail.price,
+        therapist: selectedTherapist,
+        date: selectedSlot.startTime,
+        slot: selectedSlot,
+        notes: "", // Gán mặc định là chuỗi rỗng vì không cần notes
       };
-      console.log("Booking Details:", bookingData);
+      updateBookingData(bookingData); // Lưu dữ liệu vào BookingContext
+      router.push("/payment"); // Chuyển hướng đến trang payment
     }
   };
 
@@ -139,6 +143,12 @@ export const BookingPage = () => {
                   <span className="font-medium">Price:</span> $
                   {serviceDetail.price.toFixed(2)}
                 </p>
+                <button
+                  onClick={() => router.push(`/treatment/${id}`)}
+                  className="mt-4 px-4 py-2 bg-red-400 text-white rounded-md hover:bg-red-500 transition-colors duration-200"
+                >
+                  View Details
+                </button>
               </div>
             </div>
           </div>
@@ -315,7 +325,7 @@ export const BookingPage = () => {
                   <DateCalendar
                     value={selectedDate}
                     onChange={(newValue) => setSelectedDate(newValue)}
-                    minDate={dayjs()} // Disable past dates
+                    minDate={dayjs()}
                   />
                 </LocalizationProvider>
               </div>
