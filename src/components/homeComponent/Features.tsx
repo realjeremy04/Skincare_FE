@@ -1,22 +1,26 @@
-import React from 'react';
+import React from "react";
+import { ChevronRight } from "@mui/icons-material";
 
 export const Features = () => {
   const features = [
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/9cd43cff58fa6ee0a708fbe7b3be62edc984447b1c1cc3cb456834a9e4342978?placeholderIfAbsent=true",
-      title: "Clean ingredients",
-      description: "We prioritize high-quality, natural ingredients that are safe and effective for your skin."
+      title: "Specialized Care",
+      description:
+        "We believe that healthy skin begins with specialized and dedicated care.",
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/fd5f67a02f4c2be44cf3c113ee0ba72e51c60111e309b0194f06456f117df1cc?placeholderIfAbsent=true",
-      title: "Sustainable beauty",
-      description: "Our eco-conscious approach ensures that our products are kind to the environment and your skin."
+      title: "Radiant Beauty",
+      description:
+        "Crystal Care brings radiant beauty and optimal health to your skin.",
     },
     {
       icon: "https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/ae85332a82fe41ff3de5a5adf536957fc835abcce505d5ca5549da9f4a846205?placeholderIfAbsent=true",
-      title: "Dermatologist-approved",
-      description: "Each formula is rigorously tested for purity and efficacy, so you can trust what goes on your skin."
-    }
+      title: "Optimal Skin Health",
+      description:
+        "Our Crystal Care journey begins with a mission to deliver optimal skin health.",
+    },
   ];
 
   return (
@@ -30,35 +34,36 @@ export const Features = () => {
         />
         <div className="flex flex-col mt-8 w-full max-md:max-w-full">
           <h2 className="text-4xl font-bold leading-tight max-md:max-w-full">
-            The ultimate guide to radiant beauty
+            The Ultimate Guide to Radiant Beauty
           </h2>
           <p className="self-center mt-2.5 text-lg font-medium leading-6 w-[513px] max-md:max-w-full">
-            At Skinn Care, we believe that healthy skin starts with pure, effective ingredients. Our journey began with a simple mission
+            At Crystal Care, we believe that healthy skin begins with
+            specialized and dedicated care, bringing radiant beauty and optimal
+            health to your skin.
           </p>
         </div>
       </div>
 
-      <div className="flex gap-2.5 self-center py-3 mt-8 bg-red-400 rounded-none min-h-[47px]" />
-
-      <button className="flex z-10 items-center mt-0 max-w-full text-base font-bold text-rose-50 w-[117px]">
-        <div className="flex gap-1.5 items-center self-stretch my-auto w-[117px]">
-          <span className="self-stretch my-auto w-[93px]">Learn more</span>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/41aab81e665b459d8a900c6a1ab04494/b70e7bb2bf51c557680b3aabe1633e352e15591673170ed0b58bec6f5811361c?placeholderIfAbsent=true"
-            alt=""
-            className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
-          />
-        </div>
+      <button className="mt-4 flex items-center bg-red-400 text-white font-bold text-base px-4 py-2 rounded-md rounded-se-3xl hover:bg-red-500 transition-all duration-300 group">
+        <span className="mr-2">Learn more</span>
+        <span className="transform transition-transform duration-300 group-hover:translate-x-2">
+          <ChevronRight />
+        </span>
       </button>
 
-      <div className="self-stretch mt-20 max-md:mt-10 max-md:max-w-full">
+      <div className="self-stretch mt-20 max-md:mt-10 max-md:max-w-full mx-[10%]">
         <div className="flex gap-5 max-md:flex-col">
           {features.map((feature, index) => (
             <div key={index} className="w-[33%] max-md:ml-0 max-md:w-full">
-              <div className={`flex flex-col grow justify-center px-14 py-44 w-full text-center text-red-400 ${
-                index === 0 ? 'bg-orange-100' : index === 1 ? 'bg-red-100' : 'bg-red-50'
-              } rounded-[200px] max-md:px-5 max-md:py-24 max-md:mt-8`}>
+              <div
+                className={`flex flex-col duration-200 grow justify-center px-14 py-44 w-full text-center text-red-400 ${
+                  index === 0
+                    ? "bg-orange-100 hover:bg-orange-200"
+                    : index === 1
+                    ? "bg-red-100 hover:bg-red-200"
+                    : "bg-red-50 hover:bg-red-100"
+                } rounded-[200px] max-md:px-5 max-md:py-24 max-md:mt-8`}
+              >
                 <img
                   loading="lazy"
                   src={feature.icon}
@@ -66,7 +71,9 @@ export const Features = () => {
                   className="object-contain self-center aspect-square w-[70px]"
                 />
                 <div>
-                  <h3 className="text-xl font-bold leading-tight">{feature.title}</h3>
+                  <h3 className="text-xl font-bold leading-tight">
+                    {feature.title}
+                  </h3>
                   <p className="pt-2.5 mt-6 w-full text-base font-medium">
                     {feature.description}
                   </p>
