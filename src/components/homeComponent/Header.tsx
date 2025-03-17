@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
 
@@ -40,6 +42,12 @@ export const Header = () => {
             onClick={() => router.push("/services")}
           >
             Services
+          </div>
+          <div
+            className="self-stretch my-auto hover:underline cursor-pointer"
+            onClick={() => router.push("/quizPage")}
+          >
+            TestSkin
           </div>
         </nav>
         <div className="flex justify-center items-center border-l-2 border-l-red-400">

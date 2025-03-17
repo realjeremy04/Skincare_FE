@@ -9,7 +9,7 @@ import {
 
 export const Footer = () => {
   return (
-    <footer className="flex overflow-hidden flex-col pr-20 pb-8 w-full bg-red-400 max-md:pr-5 max-md:max-w-full mt-2">
+    <footer className="flex overflow-hidden flex-col pr-20 pb-8 w-full bg-red-400 max-md:pr-5 max-md:max-w-full ">
       <div className="w-full max-w-[1570px] max-md:max-w-full ">
         <div className="flex gap-5 max-md:flex-col">
           <div className="w-1/5 max-md:ml-0 max-md:w-full">

@@ -9,11 +9,12 @@ import { useMemo, useState, useEffect } from "react";
 import CustomerAccountMenu from "@/libs/components/dashboard/CustomerAccountMenu";
 import Image from "next/image";
 import useAuth from "@/libs/context/AuthContext";
+import { ProtectedRoutes } from "@/libs/utils/ProtectedRoutes";
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { user, setUser } = useAuth();
+  const { user, setUser, logout, loading } = useAuth();
   const [session, setSession] = useState({
     user: {
       name: user?.username,
@@ -24,12 +25,8 @@ export default function Layout({
   const [mounted, setMounted] = useState(false);
   const theme = createTheme({
     palette: {
-      primary: {
-        main: "#fd6773",
-      },
-      secondary: {
-        main: "#edf2ff",
-      },
+      primary: { main: "#fd6773" },
+      secondary: { main: "#edf2ff" },
     },
   });
 
@@ -37,61 +34,67 @@ export default function Layout({
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!loading && user) {
+      setSession({
+        user: {
+          name: user.username,
+          email: user.email,
+          image: "https://avatars.githubusercontent.com/u/19550456",
+        },
+      });
+    }
+  }, [user, loading]);
+
   const authentication = useMemo(() => {
     return {
       signIn: () => {},
       signOut: () => {
-        setUser(null);
-        setSession({
-          user: {
-            name: undefined,
-            email: undefined,
-            image: "",
-          },
-        });
+        logout();
       },
     };
-  }, [setUser]);
+  }, [logout]);
 
-  // Don't render until client-side to avoid hydration mismatch
-  if (!mounted) {
-    return null;
+  if (!mounted || loading) {
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      <AppCacheProvider>
-        <NextAppProvider
-          navigation={adminRoutes}
-          authentication={authentication}
-          branding={{
-            logo: (
-              <Image
-                src="/Logo-Noname.ico"
-                alt="Logo"
-                width={50}
-                height={100}
-              />
-            ),
-            title: "",
-            homeUrl: "/",
-          }}
-          session={session}
-          theme={theme}
-        >
-          <DashboardLayout
-            slotProps={{
-              toolbarAccount: {
-                slots: { popoverContent: CustomerAccountMenu },
-              },
+      <ProtectedRoutes>
+        <AppCacheProvider>
+          <NextAppProvider
+            navigation={adminRoutes}
+            authentication={authentication}
+            branding={{
+              logo: (
+                <Image
+                  src="/Logo-Noname.ico"
+                  alt="Logo"
+                  width={50}
+                  height={100}
+                />
+              ),
+              title: "",
+              homeUrl: "/",
             }}
+            session={session}
+            theme={theme}
           >
-            <Box sx={{ width: "100%", height: "100vh" }}>
-              <PageContainer>{children}</PageContainer>
-            </Box>
-          </DashboardLayout>
-        </NextAppProvider>
-      </AppCacheProvider>
+            <DashboardLayout
+              slotProps={{
+                toolbarAccount: {
+                  slots: { popoverContent: CustomerAccountMenu },
+                },
+              }}
+            >
+              <Box sx={{ width: "100%", height: "100vh" }}>
+                <PageContainer>{children}</PageContainer>
+              </Box>
+            </DashboardLayout>
+          </NextAppProvider>
+        </AppCacheProvider>
+      </ProtectedRoutes>
     </>
   );
 }
