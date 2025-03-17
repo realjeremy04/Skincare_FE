@@ -1,8 +1,6 @@
-import { apiInstance } from "@/constants/api";
-
-const api = apiInstance("/shifts");
+import api from "@/libs/hooks/axiosInstance";
 
 export const manageShift = {
   getAllShiftByTherapist: (req: string) =>
-    api.get(`/therapist/upcoming/${req}`),
+    api.get(`/shifts/therapist/upcoming/${req}`),
 };

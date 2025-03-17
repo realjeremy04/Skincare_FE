@@ -1,8 +1,6 @@
-import { apiInstance } from "@/constants/api";
-
-const api = apiInstance("/service");
+import api from "@/libs/hooks/axiosInstance";
 
 export const manageService = {
-  getAllService: () => api.get(`/`),
-  getDetailService: (req: string) => api.get(`/${req}`),
+  getAllService: () => api.get(`/service`),
+  getDetailService: (req: string) => api.get(`/service/${req}`),
 };

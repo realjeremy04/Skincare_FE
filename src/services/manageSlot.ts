@@ -1,7 +1,5 @@
-import { apiInstance } from "@/constants/api";
-
-const api = apiInstance("/slots");
+import api from "@/libs/hooks/axiosInstance";
 
 export const manageSlot = {
-  getAllSlots: () => api.get(`/`),
+  getAllSlots: () => api.get(`/slots`),
 };

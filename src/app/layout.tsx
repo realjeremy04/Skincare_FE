@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import ReduxProvider from "@/app/provider";
 import { BookingProvider } from "@/global/bookingContext";
 import "./globals.css";
+import { AuthProvider } from "@/libs/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxProvider>
-          <BookingProvider>{children}</BookingProvider>
+          <BookingProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </BookingProvider>
         </ReduxProvider>
       </body>
     </html>

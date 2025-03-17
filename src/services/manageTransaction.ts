@@ -1,8 +1,6 @@
-import { apiInstance } from "@/constants/api";
+import api from "@/libs/hooks/axiosInstance";
 import { CreateTransaction } from "@/types/transaction";
 
-const api = apiInstance("/transaction");
-
 export const manageTransaction = {
-  createTransaction: (req: CreateTransaction) => api.post(`/`, req),
+  createTransaction: (req: CreateTransaction) => api.post(`/transaction`, req),
 };

@@ -34,7 +34,7 @@ export const BookingPage = () => {
     null
   );
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  const [selectedDate, setSelectedDate] = useState(dayjs().add(3, "day")); // Đổi mặc định thành ngày hiện tại + 2
+  const [selectedDate, setSelectedDate] = useState(dayjs().add(2, "day")); // Đổi mặc định thành ngày hiện tại + 2
 
   // Fetch service details, therapists, and slots on mount
   useEffect(() => {

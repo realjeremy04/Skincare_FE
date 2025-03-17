@@ -66,6 +66,8 @@ export const PaymentPage = () => {
       paymentMethod: "Cash",
     };
 
+    // console.log(paymentData);
+
     dispatch(createTransactionThunk(paymentData));
   };
 
