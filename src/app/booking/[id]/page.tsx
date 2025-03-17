@@ -18,6 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { useBookingContext } from "@/global/bookingContext";
+import { checkAuth } from "@/libs/context/api";
 import Swal from "sweetalert2";
 
 export const BookingPage = () => {
@@ -29,6 +30,22 @@ export const BookingPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { updateBookingData } = useBookingContext();
+
+  useEffect(() => {
+    const verifyAuth = async () => {
+      try {
+        const isAuthenticated = await checkAuth();
+        if (!isAuthenticated) {
+          router.push("/login");
+          return;
+        }
+      } catch (error) {
+        router.push("/login");
+      }
+    };
+
+    verifyAuth();
+  }, []);
 
   const [selectedTherapist, setSelectedTherapist] = useState<Therapist | null>(
     null
@@ -394,8 +411,8 @@ export const BookingPage = () => {
                           !slot.isAvailable
                             ? "border-gray-300 bg-gray-200 text-gray-500 cursor-not-allowed"
                             : isSelected
-                            ? "border-red-400 bg-red-50 text-red-400"
-                            : "border-gray-200 hover:bg-gray-50 text-gray-700"
+                              ? "border-red-400 bg-red-50 text-red-400"
+                              : "border-gray-200 hover:bg-gray-50 text-gray-700"
                         }`}
                         disabled={!slot.isAvailable}
                       >
