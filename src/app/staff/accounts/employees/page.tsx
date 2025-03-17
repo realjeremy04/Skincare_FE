@@ -1,5 +1,6 @@
 "use client";
 
+import { renderActions } from "@/libs/components/RenderActionButton";
 import TableDisplay from "@/libs/components/TableDisplayer";
 import { role } from "@/libs/constants/role";
 import {
@@ -29,7 +30,13 @@ export default function EmployeePage() {
     role.ADMIN,
     role.THERAPIST,
   ]);
-  const columns = removeUneccessaryColumns(filterData);
+  const columns = removeUneccessaryColumns(filterData, [
+    "avatar",
+    "password",
+    "__v",
+    "updatedAt",
+  ]);
+  console.log(columns);
 
   return (
     <TableDisplay
@@ -38,6 +45,7 @@ export default function EmployeePage() {
       title="Customer Accounts"
       idField="_id"
       defaultRowsPerPage={5}
+      actions={renderActions}
     />
   );
 }

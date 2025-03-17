@@ -17,9 +17,6 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import useAuth from "@/libs/context/AuthContext";
 import api from "@/libs/hooks/axiosInstance";
-import { Header } from "@/components/homeComponent/Header";
-import { Footer } from "@/components/homeComponent/Footer";
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -37,9 +34,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>{children}</Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -104,7 +99,8 @@ export default function Profile() {
         confirmButtonColor: "#F38A7F",
       });
     } catch (e) {
-      const errorMessage = e.response?.data?.message || "Failed to update profile";
+      const errorMessage =
+        e.response?.data?.message || "Failed to update profile";
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -143,9 +139,14 @@ export default function Profile() {
         text: "Password updated successfully",
         confirmButtonColor: "#F38A7F",
       });
-      setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordForm({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (e) {
-      const errorMessage = e.response?.data?.message || "Failed to update password";
+      const errorMessage =
+        e.response?.data?.message || "Failed to update password";
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -159,7 +160,6 @@ export default function Profile() {
   };
 
   return (
-  
     <Container maxWidth="md" className="py-12">
       <Paper elevation={3} className="p-6 rounded-lg bg-white">
         <Box className="flex flex-col items-center gap-6">
@@ -198,7 +198,10 @@ export default function Profile() {
 
           {/* Personal Information Tab */}
           <TabPanel value={tabValue} index={0}>
-            <form onSubmit={handleInfoSubmit} className="w-full flex flex-col gap-6">
+            <form
+              onSubmit={handleInfoSubmit}
+              className="w-full flex flex-col gap-6"
+            >
               <TextField
                 label="Username"
                 name="username"
@@ -288,7 +291,10 @@ export default function Profile() {
                 sx={{
                   backgroundColor: "#F38A7F",
                   "&:hover": { backgroundColor: "#e57368" },
-                  "&.Mui-disabled": { backgroundColor: "#F38A7F", opacity: 0.6 },
+                  "&.Mui-disabled": {
+                    backgroundColor: "#F38A7F",
+                    opacity: 0.6,
+                  },
                   textTransform: "none",
                   fontWeight: "medium",
                   padding: "12px",
@@ -306,7 +312,10 @@ export default function Profile() {
 
           {/* Change Password Tab */}
           <TabPanel value={tabValue} index={1}>
-            <form onSubmit={handlePasswordSubmit} className="w-full flex flex-col gap-6">
+            <form
+              onSubmit={handlePasswordSubmit}
+              className="w-full flex flex-col gap-6"
+            >
               <TextField
                 label="Current Password"
                 name="currentPassword"
@@ -374,7 +383,10 @@ export default function Profile() {
                 sx={{
                   backgroundColor: "#F38A7F",
                   "&:hover": { backgroundColor: "#e57368" },
-                  "&.Mui-disabled": { backgroundColor: "#F38A7F", opacity: 0.6 },
+                  "&.Mui-disabled": {
+                    backgroundColor: "#F38A7F",
+                    opacity: 0.6,
+                  },
                   textTransform: "none",
                   fontWeight: "medium",
                   padding: "12px",
@@ -392,7 +404,5 @@ export default function Profile() {
         </Box>
       </Paper>
     </Container>
-
-    
   );
 }
