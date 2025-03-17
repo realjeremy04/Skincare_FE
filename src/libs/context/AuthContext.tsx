@@ -113,6 +113,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       try {
+<<<<<<< HEAD
         const userData = await fetchUser();
         if (userData) {
           console.log("[Auth Debug] User authenticated:", userData);
@@ -123,6 +124,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (error) {
         console.error("[Auth Debug] Error during auth initialization:", error);
+=======
+        const response = await api.get("/account/profile");
+        console.log("Profile response:", response.data);
+        setUser(response.data.user);
+      } catch (e: unknown) {
+        console.error("Failed to fetch user:", {
+          status: e.response?.status,
+          data: e.response?.data,
+        });
+>>>>>>> 0cd99cf1d0f352ef46c0e4b9c499eaecd4b06725
         setUser(null);
       } finally {
         setLoading(false);
@@ -160,6 +171,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         case "therapist":
           router.push("/therapist/appointments");
           break;
+<<<<<<< HEAD
+=======
+        case "admin":
+          router.push("/staff/appointments");
+          break;
+>>>>>>> 0cd99cf1d0f352ef46c0e4b9c499eaecd4b06725
         default:
           router.push("/");
           break;

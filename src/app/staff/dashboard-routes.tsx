@@ -35,11 +35,11 @@ const adminRoutes = [
       },
     ],
   },
-  {
-    segment: "staff/blogs",
-    title: "Blogs",
-    icon: <ArticleOutlinedIcon />,
-  },
+  // {
+  //   segment: "staff/blogs",
+  //   title: "Blogs",
+  //   icon: <ArticleOutlinedIcon />,
+  // },
   {
     segment: "staff/feedbacks",
     title: "Feedbacks",
