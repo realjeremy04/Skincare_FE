@@ -3,10 +3,13 @@
 import TableDisplay from "@/libs/components/TableDisplayer";
 import api from "@/libs/hooks/axiosInstance";
 import { useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Box from "@mui/material/Box";
+
+import { role } from "@/libs/constants/role";
+import {
+  filterAccountByRole,
+  removeUneccessaryColumns,
+} from "@/libs/helpers/FitlterAccountData";
+import { renderActions } from "@/libs/components/RenderActionButton";
 
 export default function CustomerPage() {
   const [accounts, setAccounts] = useState([]);
@@ -23,48 +26,12 @@ export default function CustomerPage() {
     fetchData();
   }, []);
 
-  // Create proper column definitions from the account data
-  const columns =
-    accounts.length > 0
-      ? Object.keys(accounts[0])
-          .filter(
-            (key) =>
-              key !== "avatar" &&
-              key !== "password" &&
-              key !== "__v" &&
-              key !== "updatedAt"
-          )
-          .map((key) => ({
-            field: key,
-            header: key.toUpperCase(),
-            width: "auto",
-          }))
-      : [];
-
-  const renderActions = (row) => (
-    <Box>
-      <IconButton
-        size="small"
-        color="info"
-        onClick={() => console.log("Edit", row)}
-        title="Edit"
-      >
-        <EditIcon fontSize="small" />
-      </IconButton>
-      <IconButton
-        size="small"
-        color="error"
-        onClick={() => console.log("Delete", row)}
-        title="Delete"
-      >
-        <DeleteIcon fontSize="small" />
-      </IconButton>
-    </Box>
-  );
+  const filterData = filterAccountByRole(accounts, [role.CUSTOMER]);
+  const columns = removeUneccessaryColumns(filterData);
 
   return (
     <TableDisplay
-      data={accounts}
+      data={filterData}
       columns={columns}
       title="Customer Accounts"
       idField="_id"
