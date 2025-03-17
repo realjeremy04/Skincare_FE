@@ -3,6 +3,10 @@
 import TableDisplay from "@/libs/components/TableDisplayer";
 import api from "@/libs/hooks/axiosInstance";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import IconButton from "@mui/material/IconButton";
 
 export default function AppointmentManagementPage() {
   const [appointments, setAppointments] = useState([]);
@@ -12,7 +16,7 @@ export default function AppointmentManagementPage() {
     async function fetchData() {
       try {
         const res = await api.get("/appointment");
-        console.log("Fetched appointments:", res.data); // Debug fetched data
+        console.log("Fetched appointments:", res.data);
         setAppointments(res.data);
       } catch (error) {
         console.error("Error fetching appointment data:", error);
@@ -23,20 +27,50 @@ export default function AppointmentManagementPage() {
 
   const updateStatus = async (appointmentId, newStatus) => {
     if (updatedAppointments.has(appointmentId)) {
-      alert("This appointment's status has already been updated.");
+      Swal.fire({
+        title: "Warning!",
+        text: "This appointment's status has already been updated.",
+        icon: "warning",
+        confirmButtonColor: "#f44336",
+      });
       return;
     }
 
-    try {
-      await api.put(`/appointment/${appointmentId}`, { status: newStatus });
-      setAppointments((prev) =>
-        prev.map((appt) =>
-          appt._id === appointmentId ? { ...appt, status: newStatus } : appt
-        )
-      );
-      setUpdatedAppointments((prev) => new Set(prev).add(appointmentId));
-    } catch (error) {
-      console.error("Error updating appointment status:", error);
+    const actionText = newStatus === "Completed" ? "complete" : "cancel";
+    const result = await Swal.fire({
+      title: `Are you sure?`,
+      text: `Do you want to ${actionText} this appointment?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, ${actionText} it!`,
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await api.put(`/appointment/${appointmentId}`, { status: newStatus });
+        setAppointments((prev) =>
+          prev.map((appt) =>
+            appt._id === appointmentId ? { ...appt, status: newStatus } : appt
+          )
+        );
+        setUpdatedAppointments((prev) => new Set(prev).add(appointmentId));
+        Swal.fire({
+          title: "Success!",
+          text: `Appointment has been ${actionText}ed.`,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error("Error updating appointment status:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to update appointment status.",
+          icon: "error",
+        });
+      }
     }
   };
 
@@ -47,78 +81,110 @@ export default function AppointmentManagementPage() {
 
     return (
       <>
-        <button
+        <IconButton
           onClick={() => updateStatus(row._id, "Completed")}
           disabled={isUpdated || isCancelled || isCompleted}
-          style={{
-            marginRight: "10px",
-            padding: "5px 10px",
-            backgroundColor: isUpdated || isCancelled || isCompleted ? "#ccc" : "#4CAF50",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: isUpdated || isCancelled || isCompleted ? "not-allowed" : "pointer",
+          sx={{
+            color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#4CAF50",
+            "&:hover": {
+              color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#388E3C",
+            },
           }}
+          title="Complete Appointment"
         >
-          Complete
-        </button>
-        <button
+          <CheckCircleIcon />
+        </IconButton>
+        <IconButton
           onClick={() => updateStatus(row._id, "Cancelled")}
           disabled={isUpdated || isCancelled || isCompleted}
-          style={{
-            padding: "5px 10px",
-            backgroundColor: isUpdated || isCancelled || isCompleted ? "#ccc" : "#f44336",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: isUpdated || isCancelled || isCompleted ? "not-allowed" : "pointer",
+          sx={{
+            color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#f44336",
+            "&:hover": {
+              color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#d32f2f",
+            },
           }}
+          title="Cancel Appointment"
         >
-          Cancel
-        </button>
+          <CancelIcon />
+        </IconButton>
       </>
     );
   };
 
-  // Transform nested data to match your appointment structure
+  const truncateId = (id) => {
+    if (typeof id !== "string" || id.length <= 10) return id;
+    return `${id.slice(0, 7)}....`;
+  };
+
+  const formatTime = (time) => {
+    if (!time) return "N/A";
+    const date = new Date(time);
+    return date.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const formatMinutesToHrMins = (minutes) => {
+    if (minutes === undefined || minutes === null || isNaN(minutes)) return "N/A";
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours} hr - ${remainingMinutes} mins`;
+  };
+
   const transformedData = appointments.map((appt) => ({
-    _id: appt._id,
-    therapistId: appt.therapistId?._id || "N/A", // Handle potential missing data
+    _id: truncateId(appt._id),
+    therapistId: truncateId(appt.therapistId?._id || "N/A"),
     therapistName: appt.therapistId?.accountId || "Unknown",
-    customerId: appt.customerId?._id || "N/A",
+    customerId: truncateId(appt.customerId?._id || "N/A"),
     customerName: appt.customerId?.username || "Unknown",
-    slotId: appt.slotsId?._id || "N/A",
-    slotTime: appt.slotsId ? `${appt.slotsId.startTime} - ${appt.slotsId.endTime}` : "N/A",
-    serviceId: appt.serviceId?._id || "N/A",
+    slotId: truncateId(appt.slotsId?._id || "N/A"),
+    slotTime: appt.slotsId
+      ? `${formatTime(appt.slotsId.startTime)} - ${formatTime(appt.slotsId.endTime)}`
+      : "N/A",
+    serviceId: truncateId(appt.serviceId?._id || "N/A"),
     serviceName: appt.serviceId?.serviceName || "Unknown",
-    checkInImage: appt.checkInImage || "N/A",
-    checkOutImage: appt.checkOutImage || "N/A",
+    checkInImage: appt.checkInImage ? (
+      <img
+        src={appt.checkInImage}
+        alt="Check-In"
+        style={{ width: "50px", height: "50px", objectFit: "cover" }}
+        onError={(e) => (e.target.src = "N/A")}
+      />
+    ) : (
+      "N/A"
+    ),
+    checkOutImage: appt.checkOutImage ? (
+      <img
+        src={appt.checkOutImage}
+        alt="Check-Out"
+        style={{ width: "50px", height: "50px", objectFit: "cover" }}
+        onError={(e) => (e.target.src = "N/A")}
+      />
+    ) : (
+      "N/A"
+    ),
     notes: appt.notes || "No notes",
-    amount: appt.amount || 0,
+    amount: formatMinutesToHrMins(appt.amount),
     status: appt.status || "Unknown",
   }));
 
-  // Define columns based on transformed data
   const columns = [
-    { field: "_id", headerName: "Appointment ID" },
-    { field: "therapistId", headerName: "Therapist ID" },
-    { field: "therapistName", headerName: "Therapist Account" },
-    { field: "customerId", headerName: "Customer ID" },
-    { field: "customerName", headerName: "Customer Name" },
-    { field: "slotId", headerName: "Slot ID" },
-    { field: "slotTime", headerName: "Slot Time" },
-    { field: "serviceId", headerName: "Service ID" },
-    { field: "serviceName", headerName: "Service Name" },
-    { field: "checkInImage", headerName: "Check-In Image" },
-    { field: "checkOutImage", headerName: "Check-Out Image" },
-    { field: "notes", headerName: "Notes" },
-    { field: "amount", headerName: "Amount" },
-    { field: "status", headerName: "Status" },
+    { field: "_id", header: "Appointment ID" },
+    { field: "therapistId", header: "Therapist ID" },
+    { field: "therapistName", header: "Therapist Account" },
+    { field: "customerId", header: "Customer ID" },
+    { field: "customerName", header: "Customer Name" },
+    { field: "slotId", header: "Slot ID" },
+    { field: "slotTime", header: "Slot Time" },
+    { field: "serviceId", header: "Service ID" },
+    { field: "serviceName", header: "Service Name" },
+    { field: "checkInImage", header: "Check-In Image" },
+    { field: "checkOutImage", header: "Check-Out Image" },
+    { field: "notes", header: "Notes" },
+    { field: "amount", header: "Duration" },
+    { field: "status", header: "Status" },
   ];
-
-  // Debug transformed data and columns
-  console.log("Transformed data:", transformedData);
-  console.log("Columns:", columns);
 
   return (
     <>
