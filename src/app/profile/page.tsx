@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import useAuth from "@/libs/context/AuthContext";
 import api from "@/libs/hooks/axiosInstance";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -40,10 +41,9 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function Profile() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, loading: authLoading } = useAuth(); // Rename to avoid confusion
   const router = useRouter();
   const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false); // Added loading state
   const [infoForm, setInfoForm] = useState({
     username: "",
     email: "",
@@ -55,8 +55,10 @@ export default function Profile() {
     newPassword: "",
     confirmPassword: "",
   });
+  const [formLoading, setFormLoading] = useState(false); // Local loading state for form submissions
 
   useEffect(() => {
+    if (authLoading) return; // Wait for auth loading to finish
     if (user) {
       setInfoForm({
         username: user.username || "",
@@ -67,7 +69,7 @@ export default function Profile() {
     } else {
       router.push("/login");
     }
-  }, [user, router]);
+  }, [user, authLoading, router]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -83,7 +85,7 @@ export default function Profile() {
 
   const handleInfoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Start loading
+    setFormLoading(true); // Start form loading
 
     try {
       const response = await api.put("/account/updateProfile", {
@@ -109,13 +111,13 @@ export default function Profile() {
       });
       console.error("Update failed:", e);
     } finally {
-      setLoading(false); // Stop loading
+      setFormLoading(false); // Stop form loading
     }
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Start loading
+    setFormLoading(true); // Start form loading
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       Swal.fire({
@@ -124,7 +126,7 @@ export default function Profile() {
         text: "New passwords don't match",
         confirmButtonColor: "#F38A7F",
       });
-      setLoading(false); // Stop loading early if validation fails
+      setFormLoading(false);
       return;
     }
 
@@ -155,9 +157,18 @@ export default function Profile() {
       });
       console.error("Password update failed:", e);
     } finally {
-      setLoading(false); // Stop loading
+      setFormLoading(false); // Stop form loading
     }
   };
+
+  // Show loading spinner while auth is initializing
+  if (authLoading) {
+    return (
+      <Container maxWidth="md" className="py-12 flex justify-center items-center">
+        <CircularProgress sx={{ color: "#F38A7F" }} />
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="md" className="py-12">
@@ -209,7 +220,7 @@ export default function Profile() {
                 onChange={handleInfoChange}
                 fullWidth
                 variant="outlined"
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -252,7 +263,7 @@ export default function Profile() {
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -272,7 +283,7 @@ export default function Profile() {
                 onChange={handleInfoChange}
                 fullWidth
                 variant="outlined"
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -287,7 +298,7 @@ export default function Profile() {
               <Button
                 type="submit"
                 variant="contained"
-                disabled={loading} // Disable button during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   backgroundColor: "#F38A7F",
                   "&:hover": { backgroundColor: "#e57368" },
@@ -301,7 +312,7 @@ export default function Profile() {
                   fontSize: "1rem",
                 }}
               >
-                {loading ? (
+                {formLoading ? (
                   <CircularProgress size={24} sx={{ color: "#FFFFFF" }} />
                 ) : (
                   "Save Changes"
@@ -324,7 +335,7 @@ export default function Profile() {
                 onChange={handlePasswordChange}
                 fullWidth
                 variant="outlined"
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -344,7 +355,7 @@ export default function Profile() {
                 onChange={handlePasswordChange}
                 fullWidth
                 variant="outlined"
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -364,7 +375,7 @@ export default function Profile() {
                 onChange={handlePasswordChange}
                 fullWidth
                 variant="outlined"
-                disabled={loading} // Disable input during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     "& fieldset": { borderColor: "#F38A7F" },
@@ -379,7 +390,7 @@ export default function Profile() {
               <Button
                 type="submit"
                 variant="contained"
-                disabled={loading} // Disable button during loading
+                disabled={formLoading || authLoading} // Disable during form or auth loading
                 sx={{
                   backgroundColor: "#F38A7F",
                   "&:hover": { backgroundColor: "#e57368" },
@@ -393,7 +404,7 @@ export default function Profile() {
                   fontSize: "1rem",
                 }}
               >
-                {loading ? (
+                {formLoading ? (
                   <CircularProgress size={24} sx={{ color: "#FFFFFF" }} />
                 ) : (
                   "Update Password"
