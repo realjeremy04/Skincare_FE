@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await api.post("/account/logout");
+      await api.get("/account/logout");
     } catch (e) {
       console.error("Logout failed:", e);
     } finally {
