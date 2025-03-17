@@ -6,7 +6,6 @@
 // import { User } from "../types/login";
 // import api from "../hooks/axiosInstance";
 
-
 // // Define type for the auth context
 // interface AuthContextType {
 //   user: User | null;
@@ -26,7 +25,7 @@
 //   useEffect(() => {
 //     const fetchUser = async () => {
 //       try {
-//         const response = await api.get("/account/profile"); 
+//         const response = await api.get("/account/profile");
 //         setUser(response.data.user);
 //       } catch (e: unknown) {
 //         console.error("Failed to fetch user:", e);
@@ -44,7 +43,7 @@
 //       router.push("/staff/appointments");
 //     } catch (e: unknown) {
 //       console.error("Login failed:", e);
-//       throw e; 
+//       throw e;
 //     }
 //   };
 
@@ -143,7 +142,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await api.post("/account/login", { email, password });
       const data = response.data;
       setUser(data.user);
-      router.push("/staff/appointments");
+      switch (data.user.role.toLowerCase()) {
+        case "staff":
+          router.push("/staff/appointments");
+          break;
+        case "customer":
+          router.push("/");
+          break;
+        case "therapist":
+          router.push("/therapist/appointments");
+          break;
+        // case "manager":
+        //   router.push("/manager/reports");
+        //   break;
+        default:
+          router.push("/");
+          break;
+      }
     } catch (e) {
       console.error("Login failed:", e);
       throw e;

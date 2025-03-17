@@ -8,7 +8,10 @@ export const Header = () => {
 
   return (
     <div className="flex flex-wrap gap-5 justify-between py-4 px-6 self-center w-full text-base bg-stone-50 text-red-400 max-md:max-w-full">
-      <div className="flex justify-center items-center gap-1 font-medium">
+      <div
+        className="flex justify-center items-center gap-1 font-medium"
+        onClick={() => router.push("/")}
+      >
         <img
           loading="lazy"
           src="/Logo-Noname.png"
@@ -39,7 +42,7 @@ export const Header = () => {
           </div>
           <div
             className="self-stretch my-auto hover:underline cursor-pointer"
-            onClick={() => router.push("/services")}
+            onClick={() => router.push("/treatment")}
           >
             Services
           </div>
