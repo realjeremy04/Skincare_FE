@@ -134,15 +134,15 @@ export default function AppointmentManagementPage() {
 
   const transformedData = appointments.map((appt) => ({
     _id: truncateId(appt._id),
-    therapistId: truncateId(appt.therapistId?._id || "N/A"),
+    therapistId: truncateId(appt.therapistId?._id || "N/A"), // Kept for potential use, not displayed
     therapistName: appt.therapistId?.accountId || "Unknown",
-    customerId: truncateId(appt.customerId?._id || "N/A"),
+    customerId: truncateId(appt.customerId?._id || "N/A"), // Kept for potential use, not displayed
     customerName: appt.customerId?.username || "Unknown",
-    slotId: truncateId(appt.slotsId?._id || "N/A"),
+    slotId: truncateId(appt.slotsId?._id || "N/A"), // Kept for potential use, not displayed
     slotTime: appt.slotsId
       ? `${formatTime(appt.slotsId.startTime)} - ${formatTime(appt.slotsId.endTime)}`
       : "N/A",
-    serviceId: truncateId(appt.serviceId?._id || "N/A"),
+    serviceId: truncateId(appt.serviceId?._id || "N/A"), // Kept for potential use, not displayed
     serviceName: appt.serviceId?.serviceName || "Unknown",
     checkInImage: appt.checkInImage ? (
       <img
@@ -171,13 +171,8 @@ export default function AppointmentManagementPage() {
 
   const columns = [
     { field: "_id", header: "Appointment ID" },
-    { field: "therapistId", header: "Therapist ID" },
-    { field: "therapistName", header: "Therapist Account" },
-    { field: "customerId", header: "Customer ID" },
     { field: "customerName", header: "Customer Name" },
-    { field: "slotId", header: "Slot ID" },
     { field: "slotTime", header: "Slot Time" },
-    { field: "serviceId", header: "Service ID" },
     { field: "serviceName", header: "Service Name" },
     { field: "checkInImage", header: "Check-In Image" },
     { field: "checkOutImage", header: "Check-Out Image" },
