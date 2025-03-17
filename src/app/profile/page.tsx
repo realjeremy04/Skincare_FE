@@ -159,8 +159,7 @@ export default function Profile() {
   };
 
   return (
-    <>
-    <Header />
+  
     <Container maxWidth="md" className="py-12">
       <Paper elevation={3} className="p-6 rounded-lg bg-white">
         <Box className="flex flex-col items-center gap-6">
@@ -393,8 +392,7 @@ export default function Profile() {
         </Box>
       </Paper>
     </Container>
-    <Footer />
-    </>
+
     
   );
 }
