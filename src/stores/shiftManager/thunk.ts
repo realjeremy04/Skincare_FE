@@ -13,3 +13,16 @@ export const getAllShiftByTherapistThunk = createAsyncThunk(
     }
   }
 );
+
+export const getAllShiftByAccountThunk = createAsyncThunk(
+  "getAllShiftByAccount",
+  async (req: string, { rejectWithValue }) => {
+    try {
+      const data = await manageShift.getAllShiftByAccount(req);
+      return data.data;
+    } catch (error) {
+      console.log("API error:", error);
+      return rejectWithValue(error);
+    }
+  }
+);

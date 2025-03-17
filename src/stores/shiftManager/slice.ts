@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllShiftByTherapistThunk } from "./thunk";
+import {
+  getAllShiftByTherapistThunk,
+  getAllShiftByAccountThunk,
+} from "./thunk";
 import { Shift } from "@/types/shift";
 import Swal from "sweetalert2";
 
@@ -18,10 +21,15 @@ export const manageShiftSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getAllShiftByTherapistThunk.fulfilled, (state, action) => {
-      state.loading = false;
-      state.shift = action.payload;
-    });
+    builder
+      .addCase(getAllShiftByTherapistThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.shift = action.payload;
+      })
+      .addCase(getAllShiftByAccountThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.shift = action.payload;
+      });
   },
 });
 

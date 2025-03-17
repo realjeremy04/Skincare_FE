@@ -10,4 +10,5 @@ export interface User {
   role: string;
   isActive: boolean;
   token?: string;
+  _id: string;
 }
