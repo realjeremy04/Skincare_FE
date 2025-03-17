@@ -27,7 +27,12 @@ export default function CustomerPage() {
   }, []);
 
   const filterData = filterAccountByRole(accounts, [role.CUSTOMER]);
-  const columns = removeUneccessaryColumns(filterData);
+  const columns = removeUneccessaryColumns(filterData, [
+    "avatar",
+    "password",
+    "__v",
+    "updatedAt",
+  ]);
 
   return (
     <TableDisplay
