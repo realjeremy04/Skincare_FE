@@ -60,8 +60,8 @@ export const Header = () => {
         <div className="text-2xl">| Crystal Care</div>
       </div>
       
-      <div className="flex flex-wrap gap-10 my-auto max-md:max-w-full">
-        <nav className="flex gap-10 items-center my-auto font-medium text-lg">
+      <div className="flex flex-wrap gap-4 my-auto max-md:max-w-full">
+        <nav className="flex gap-5 items-center my-auto font-medium text-lg">
           <div
             className="self-stretch my-auto hover:underline cursor-pointer"
             onClick={() => router.push("/")}
@@ -94,7 +94,7 @@ export const Header = () => {
           </div>
         </nav>
 
-        <div className="flex justify-center items-center border-l-2 border-l-red-400">
+        <div className="flex justify-center items-center border-l-2 border-l-red-400 pl-4">
           {user ? (
             <div className="flex items-center gap-2">
               <Avatar 
