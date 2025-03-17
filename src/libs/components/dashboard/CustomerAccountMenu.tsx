@@ -1,10 +1,11 @@
-import { Button, Divider, Link, Stack } from "@mui/material";
+import { Button, Divider, Stack } from "@mui/material";
 import {
   AccountPopoverFooter,
   AccountPreview,
   SignOutButton,
 } from "@toolpad/core";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import Link from "next/link";
 
 export default function CustomerAccountMenu() {
   return (
@@ -18,7 +19,7 @@ export default function CustomerAccountMenu() {
           alignContent: "center",
         }}
       >
-        <Link href="/">
+        <Link href="/profile">
           <Button
             variant="contained"
             color="primary"
