@@ -38,8 +38,9 @@ import ContactPage from "./contact/page";
 import QuizHistoryPage from "./quizHistory/page";
 import QuizHistoryDetailPage from "./quizHistory/[id]/page";
 
-import { AuthProvider } from "@/libs/context/AuthContext";
 import { JSX } from "react";
+import { AuthProvider } from "@/libs/context/AuthContext";
+import ProfilePage from "./profilePage/page";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
@@ -50,6 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     "/contact": <ContactPage />,
     "/quizPage": <QuizPage />,
     "/quizHistory": <QuizHistoryPage />,
+    "/profilePage": <ProfilePage />,
     ...(quizHistoryId && {
       [`/quizHistory/${quizHistoryId}`]: (
         <QuizHistoryDetailPage params={{ id: quizHistoryId }} />
@@ -60,11 +62,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const CurrentPage = routes[pathname] || <Component {...pageProps} />; // Fallback to default Component
 
   return (
-    <AuthProvider>
+    <>
       <Header />
       <div>{CurrentPage}</div>
       <Footer />
-    </AuthProvider>
+    </>
   );
 }
 

@@ -23,7 +23,9 @@ const getTokenFromCookie = () => {
   const tokenCookie = cookies.find((cookie) =>
     cookie.trim().startsWith("jwt=")
   );
-  return tokenCookie ? tokenCookie.split("=")[1] : null;
+  const token = tokenCookie ? tokenCookie.split("=")[1] : null;
+  console.log("Token from cookie:", token ? "Found" : "Not found");
+  return token;
 };
 
 // Helper function to get default fetch options
@@ -41,6 +43,9 @@ const getDefaultOptions = () => {
       ...options.headers,
       Authorization: `Bearer ${token}`,
     };
+    console.log("Authorization header added");
+  } else {
+    console.log("No token found, request will be made without authorization");
   }
 
   return options;
@@ -49,16 +54,22 @@ const getDefaultOptions = () => {
 // Check authentication status
 export const checkAuth = async (): Promise<boolean> => {
   try {
+    console.log("Checking authentication...");
     const response = await fetch(getApiUrl("account/profile"), {
       method: "GET",
       ...getDefaultOptions(),
       signal: AbortSignal.timeout(API_CONFIG.timeout),
     });
 
+    console.log("Auth check response status:", response.status);
+    
     if (response.ok) {
       const data = await response.json();
+      console.log("Auth check response data:", data);
       return data && data.user ? true : false;
     }
+    
+    console.log("Auth check failed with status:", response.status);
     return false;
   } catch (error) {
     console.error("Auth check error:", error);

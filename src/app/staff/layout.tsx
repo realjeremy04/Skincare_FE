@@ -62,7 +62,7 @@ export default function Layout({
 
   return (
     <>
-      <ProtectedRoutes allowedRoles={[role.STAFF]}>
+      <ProtectedRoutes allowedRoles={[role.STAFF, role.ADMIN]}>
         <AppCacheProvider>
           <NextAppProvider
             navigation={adminRoutes}
