@@ -3,7 +3,7 @@
 import { DashboardLayout, PageContainer } from "@toolpad/core";
 import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
 import { NextAppProvider } from "@toolpad/core/nextjs";
-import adminRoutes from "./dashboard-routes";
+import therapistRoutes from "./dashboard-routes";
 import { Box, createTheme } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import CustomerAccountMenu from "@/libs/components/dashboard/CustomerAccountMenu";
@@ -62,10 +62,10 @@ export default function Layout({
 
   return (
     <>
-      <ProtectedRoutes allowedRoles={[role.STAFF]}>
+      <ProtectedRoutes allowedRoles={[role.THERAPIST, role.STAFF]}>
         <AppCacheProvider>
           <NextAppProvider
-            navigation={adminRoutes}
+            navigation={therapistRoutes}
             authentication={authentication}
             branding={{
               logo: (

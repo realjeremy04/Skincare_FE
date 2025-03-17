@@ -30,6 +30,8 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { AppProps } from "next/app";
+import { Header } from "@/components/homeComponent/Header";
+import { Footer } from "@/components/homeComponent/Footer";
 import QuizPage from "./quizPage/page";
 import HomePage from "./Homepage/HomePage";
 import ContactPage from "./contact/page";
@@ -59,7 +61,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <AuthProvider>
+      <Header />
       <div>{CurrentPage}</div>
+      <Footer />
     </AuthProvider>
   );
 }

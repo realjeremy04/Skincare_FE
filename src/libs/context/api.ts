@@ -4,24 +4,26 @@ import { IUserQuizResult } from "@/libs/types/userquiz.interface";
 
 // API Configuration
 const API_CONFIG = {
-  baseURL: "http://localhost:8080/api",  
+  baseURL: "http://localhost:8080/api",
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  }
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 };
 
 // Helper function to construct API URLs
 const getApiUrl = (endpoint: string): string => {
-  return `${API_CONFIG.baseURL}/${endpoint.replace(/^\/+/, '')}`;
+  return `${API_CONFIG.baseURL}/${endpoint.replace(/^\/+/, "")}`;
 };
 
 // Helper function to get token from cookies
 const getTokenFromCookie = () => {
-  const cookies = document.cookie.split(';');
-  const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('jwt='));
-  return tokenCookie ? tokenCookie.split('=')[1] : null;
+  const cookies = document.cookie.split(";");
+  const tokenCookie = cookies.find((cookie) =>
+    cookie.trim().startsWith("jwt=")
+  );
+  return tokenCookie ? tokenCookie.split("=")[1] : null;
 };
 
 // Helper function to get default fetch options
@@ -30,24 +32,24 @@ const getDefaultOptions = () => {
     headers: {
       ...API_CONFIG.headers,
     },
-    credentials: 'include', // This is important for CORS
+    credentials: "include", // This is important for CORS
   };
-  
+
   const token = getTokenFromCookie();
   if (token) {
     options.headers = {
       ...options.headers,
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
   }
-  
+
   return options;
 };
 
 // Check authentication status
 export const checkAuth = async (): Promise<boolean> => {
   try {
-    const response = await fetch(getApiUrl('account/profile'), {
+    const response = await fetch(getApiUrl("account/profile"), {
       method: "GET",
       ...getDefaultOptions(),
       signal: AbortSignal.timeout(API_CONFIG.timeout),
@@ -59,7 +61,7 @@ export const checkAuth = async (): Promise<boolean> => {
     }
     return false;
   } catch (error) {
-    console.error('Auth check error:', error);
+    console.error("Auth check error:", error);
     return false;
   }
 };
@@ -68,26 +70,33 @@ export const checkAuth = async (): Promise<boolean> => {
 export const fetchQuestions = async (): Promise<IQuestion[]> => {
   try {
     if (!navigator.onLine) {
-      throw new Error("Không có kết nối mạng! Vui lòng kiểm tra kết nối internet của bạn.");
+      throw new Error(
+        "Không có kết nối mạng! Vui lòng kiểm tra kết nối internet của bạn."
+      );
     }
 
-    console.log('Fetching questions...', {
-      url: getApiUrl('question'),
-      config: getDefaultOptions()
+    console.log("Fetching questions...", {
+      url: getApiUrl("question"),
+      config: getDefaultOptions(),
     });
 
-    const response = await fetch(getApiUrl('question'), {
+    const response = await fetch(getApiUrl("question"), {
       method: "GET",
       ...getDefaultOptions(),
       signal: AbortSignal.timeout(API_CONFIG.timeout),
     });
 
     // Log the full response for debugging
-    console.log('Full Response:', response);
-    console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
+    console.log("Full Response:", response);
+    console.log(
+      "Response Headers:",
+      Object.fromEntries(response.headers.entries())
+    );
 
     if (response.status === 204) {
-      console.warn('Server returned no content (204). This might mean there are no questions available.');
+      console.warn(
+        "Server returned no content (204). This might mean there are no questions available."
+      );
       return [];
     }
 
@@ -103,27 +112,27 @@ export const fetchQuestions = async (): Promise<IQuestion[]> => {
         });
         errorMessage = errorText || response.statusText;
       } catch {
-        errorMessage = 'Unknown error occurred';
+        errorMessage = "Unknown error occurred";
       }
-      
+
       if (response.status === 404) {
         throw new Error("Không tìm thấy câu hỏi. Vui lòng thử lại sau.");
       }
-      
+
       throw new Error(`Lỗi lấy câu hỏi: ${response.status} - ${errorMessage}`);
     }
 
     const text = await response.text();
-    console.log('Raw response text:', text);
+    console.log("Raw response text:", text);
 
     if (!text) {
-      console.warn('Empty response received');
+      console.warn("Empty response received");
       return [];
     }
 
     try {
       const data = JSON.parse(text);
-      console.log('Parsed data:', data);
+      console.log("Parsed data:", data);
 
       if (!Array.isArray(data)) {
         console.error("Invalid data format:", data);
@@ -132,7 +141,7 @@ export const fetchQuestions = async (): Promise<IQuestion[]> => {
 
       return data;
     } catch (parseError) {
-      console.error('Failed to parse response:', parseError);
+      console.error("Failed to parse response:", parseError);
       throw new Error("Dữ liệu không hợp lệ! (Không thể parse JSON)");
     }
   } catch (error: unknown) {
@@ -140,15 +149,17 @@ export const fetchQuestions = async (): Promise<IQuestion[]> => {
       console.error("Network Error:", {
         message: error.message,
         name: error.name,
-        url: getApiUrl('question'),
+        url: getApiUrl("question"),
       });
       throw new Error(
         "Không thể kết nối đến máy chủ. Vui lòng kiểm tra:\n" +
-        "1. Máy chủ đã được khởi động chưa?\n" +
-        "2. URL máy chủ có đúng không? (" + API_CONFIG.baseURL + ")\n" +
-        "3. Cổng máy chủ có đang hoạt động không?\n" +
-        "4. CORS đã được cấu hình đúng trên máy chủ chưa?\n" +
-        "5. Máy chủ có trả về dữ liệu không?"
+          "1. Máy chủ đã được khởi động chưa?\n" +
+          "2. URL máy chủ có đúng không? (" +
+          API_CONFIG.baseURL +
+          ")\n" +
+          "3. Cổng máy chủ có đang hoạt động không?\n" +
+          "4. CORS đã được cấu hình đúng trên máy chủ chưa?\n" +
+          "5. Máy chủ có trả về dữ liệu không?"
       );
     }
 
@@ -161,12 +172,14 @@ export const fetchQuestions = async (): Promise<IQuestion[]> => {
 };
 
 // 🚀 Fetch scoreband based on totalPoints
-export const fetchScoreband = async (totalPoints: number): Promise<IScoreband | null> => {
+export const fetchScoreband = async (
+  totalPoints: number
+): Promise<IScoreband | null> => {
   try {
-    console.log('Fetching scoreband for total points:', totalPoints);
-    
+    console.log("Fetching scoreband for total points:", totalPoints);
+
     // First, get all scorebands
-    const response = await fetch(getApiUrl('scoreband'), {
+    const response = await fetch(getApiUrl("scoreband"), {
       method: "GET",
       ...getDefaultOptions(),
       signal: AbortSignal.timeout(API_CONFIG.timeout),
@@ -184,37 +197,38 @@ export const fetchScoreband = async (totalPoints: number): Promise<IScoreband | 
     }
 
     const scorebands = await response.json();
-    console.log('Received scorebands:', scorebands);
+    console.log("Received scorebands:", scorebands);
 
     if (!Array.isArray(scorebands)) {
-      console.error('Invalid scorebands data:', scorebands);
-      throw new Error('Dữ liệu Scoreband không hợp lệ! (Expected array)');
+      console.error("Invalid scorebands data:", scorebands);
+      throw new Error("Dữ liệu Scoreband không hợp lệ! (Expected array)");
     }
 
     // Find the matching scoreband based on points range
-    const matchingScoreband = scorebands.find(band => {
+    const matchingScoreband = scorebands.find((band) => {
       const minPoints = band.minPoint || 0;
       const maxPoints = band.maxPoint || Infinity;
       return totalPoints >= minPoints && totalPoints <= maxPoints;
     });
 
     if (!matchingScoreband) {
-      console.warn('No matching scoreband found for points:', totalPoints);
+      console.warn("No matching scoreband found for points:", totalPoints);
       return null;
     }
 
-    console.log('Found matching scoreband:', matchingScoreband);
+    console.log("Found matching scoreband:", matchingScoreband);
     return matchingScoreband;
-
   } catch (error: unknown) {
-    console.error('Scoreband fetch error:', error);
-    
+    console.error("Scoreband fetch error:", error);
+
     if (error instanceof TypeError) {
       console.error("Network error fetching scoreband:", {
         message: error.message,
         name: error.name,
       });
-      throw new Error("Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại!");
+      throw new Error(
+        "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng và thử lại!"
+      );
     }
 
     if (error instanceof Error) {
@@ -235,37 +249,43 @@ export const submitQuizResults = async (
   try {
     // Validate inputs
     if (!accountId) throw new Error("accountId is required");
-    if (!Array.isArray(results) || results.length === 0) throw new Error("results must be a non-empty array");
-    if (typeof totalPoint !== 'number') throw new Error("totalPoint must be a number");
+    if (!Array.isArray(results) || results.length === 0)
+      throw new Error("results must be a non-empty array");
+    if (typeof totalPoint !== "number")
+      throw new Error("totalPoint must be a number");
     if (!scoreBandId) throw new Error("scorebandId is required");
 
     // Validate ObjectId format
     const objectIdPattern = /^[0-9a-fA-F]{24}$/;
     if (!objectIdPattern.test(accountId)) {
-      throw new Error("Invalid accountId format. Must be a valid MongoDB ObjectId");
+      throw new Error(
+        "Invalid accountId format. Must be a valid MongoDB ObjectId"
+      );
     }
     if (!objectIdPattern.test(scoreBandId)) {
-      throw new Error("Invalid scoreBandId format. Must be a valid MongoDB ObjectId");
+      throw new Error(
+        "Invalid scoreBandId format. Must be a valid MongoDB ObjectId"
+      );
     }
 
     // Format payload exactly as backend expects
     const payload = {
       accountId,
       scoreBandId,
-      result: results.map(result => ({
+      result: results.map((result) => ({
         title: result.title,
         answer: result.answer,
-        point: result.point
+        point: result.point,
       })),
-      totalPoint
+      totalPoint,
     };
 
-    console.log('Submitting quiz results:', {
-      url: getApiUrl('userQuiz'),
-      payload: JSON.stringify(payload, null, 2)
+    console.log("Submitting quiz results:", {
+      url: getApiUrl("userQuiz"),
+      payload: JSON.stringify(payload, null, 2),
     });
 
-    const response = await fetch(getApiUrl('userQuiz'), {
+    const response = await fetch(getApiUrl("userQuiz"), {
       method: "POST",
       ...getDefaultOptions(),
       body: JSON.stringify(payload),
@@ -273,12 +293,12 @@ export const submitQuizResults = async (
     });
 
     // Try to read the response text first
-    let responseText = '';
+    let responseText = "";
     try {
       responseText = await response.text();
-      console.log('Raw response:', responseText);
+      console.log("Raw response:", responseText);
     } catch (readError) {
-      console.error('Failed to read response:', readError);
+      console.error("Failed to read response:", readError);
     }
 
     // Try to parse the response as JSON
@@ -298,44 +318,50 @@ export const submitQuizResults = async (
         responseText: responseText,
         errorData: errorData,
         url: response.url,
-        sentPayload: payload
+        sentPayload: payload,
       });
 
       if (response.status === 500) {
-        const errorDetail = errorData?.message || responseText || 'Không có thông tin chi tiết';
+        const errorDetail =
+          errorData?.message || responseText || "Không có thông tin chi tiết";
         throw new Error(
           "Lỗi máy chủ khi lưu kết quả. Vui lòng kiểm tra:\n" +
-          "1. Định dạng dữ liệu có đúng không?\n" +
-          `2. ID scoreband '${scoreBandId}' có tồn tại không?\n` +
-          "3. Tất cả các trường bắt buộc đã được điền chưa?\n" +
-          `4. Chi tiết lỗi: ${errorDetail}`
+            "1. Định dạng dữ liệu có đúng không?\n" +
+            `2. ID scoreband '${scoreBandId}' có tồn tại không?\n` +
+            "3. Tất cả các trường bắt buộc đã được điền chưa?\n" +
+            `4. Chi tiết lỗi: ${errorDetail}`
         );
       }
 
-      throw new Error(errorData?.message || `Lỗi gửi kết quả Quiz (${response.status}): ${responseText || response.statusText}`);
+      throw new Error(
+        errorData?.message ||
+          `Lỗi gửi kết quả Quiz (${response.status}): ${responseText || response.statusText}`
+      );
     }
 
     return { success: true };
   } catch (error: unknown) {
-    console.error('Submit quiz error:', {
+    console.error("Submit quiz error:", {
       error,
-      type: error instanceof Error ? 'Error' : typeof error,
-      message: error instanceof Error ? error.message : 'Unknown error',
+      type: error instanceof Error ? "Error" : typeof error,
+      message: error instanceof Error ? error.message : "Unknown error",
       stack: error instanceof Error ? error.stack : undefined,
       payload: {
         accountId,
         resultsCount: results.length,
         totalPoint,
-        scoreBandId
-      }
+        scoreBandId,
+      },
     });
-    
+
     if (error instanceof TypeError) {
       throw new Error(
         "Không thể kết nối đến máy chủ. Vui lòng kiểm tra:\n" +
-        "1. Máy chủ đã được khởi động chưa?\n" +
-        "2. URL máy chủ có đúng không? (" + API_CONFIG.baseURL + ")\n" +
-        "3. CORS đã được cấu hình đúng trên máy chủ chưa?"
+          "1. Máy chủ đã được khởi động chưa?\n" +
+          "2. URL máy chủ có đúng không? (" +
+          API_CONFIG.baseURL +
+          ")\n" +
+          "3. CORS đã được cấu hình đúng trên máy chủ chưa?"
       );
     }
 

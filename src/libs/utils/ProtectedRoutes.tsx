@@ -1,35 +1,44 @@
-"use client";
-
 import { useRouter } from "next/navigation";
-import useAuth from "../context/AuthContext"; // Adjust path
-import { role } from "../constants/role";
-import { ReactNode, useEffect } from "react";
+import { useEffect, useState } from "react";
+import useAuth from "@/libs/context/AuthContext";
 
 interface ProtectedRoutesProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  allowedRoles: string[]; // Danh sách các vai trò được phép truy cập
 }
 
-export const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
+const ProtectedRoutes = ({ children, allowedRoles }: ProtectedRoutesProps) => {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth(); // Lấy thông tin user từ context
+
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (loading) return; // Wait until loading is done
+    setIsMounted(true);
+  }, []);
 
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-
-    // Optional: Uncomment for role-based routing
-    if (![role.ADMIN, role.STAFF, role.THERAPIST].includes(user.role as string)) {
-      router.push("/");
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return <div>Loading...</div>; // Optional: Better UX
+  // Nếu component chưa mount, không render gì
+  if (!isMounted) {
+    return null;
   }
 
-  return children;
+  // Nếu đang tải thông tin người dùng, không render gì
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    router.push("/login");
+    return null;
+  }
+
+  // Kiểm tra nếu người dùng không có vai trò hợp lệ
+  if (!allowedRoles.includes(user.role)) {
+    router.push("/");
+    return null;
+  }
+
+  return <>{children}</>; // Render nội dung nếu người dùng có quyền truy cập
 };
+
+export default ProtectedRoutes;
