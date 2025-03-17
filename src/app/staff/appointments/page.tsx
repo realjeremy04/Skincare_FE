@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"; // New icon for InProgress
+import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
-
 import { role } from "@/libs/constants/role";
 import useAuth from "@/libs/context/AuthContext";
 
@@ -60,7 +61,30 @@ export default function AppointmentManagementPage() {
       return;
     }
 
-    const actionText = newStatus === "Completed" ? "complete" : "cancel";
+    const currentAppt = appointments.find((appt) => appt._id === appointmentId);
+    if (!currentAppt) return;
+
+    // Status transition rules
+    if (currentAppt.status === "Scheduled" && newStatus === "Completed") {
+      Swal.fire({
+        title: "Error!",
+        text: "Scheduled appointments must transition to InProgress before being Completed.",
+        icon: "error",
+        confirmButtonColor: "#f44336",
+      });
+      return;
+    }
+    if ((currentAppt.status === "Completed" || currentAppt.status === "Cancelled") && newStatus === "InProgress") {
+      Swal.fire({
+        title: "Error!",
+        text: "Completed or Cancelled appointments cannot be set to InProgress.",
+        icon: "error",
+        confirmButtonColor: "#f44336",
+      });
+      return;
+    }
+
+    const actionText = newStatus === "Completed" ? "complete" : newStatus === "Cancelled" ? "cancel" : "start";
     const result = await Swal.fire({
       title: `Are you sure?`,
       text: `Do you want to ${actionText} this appointment?`,
@@ -73,7 +97,7 @@ export default function AppointmentManagementPage() {
 
     if (result.isConfirmed) {
       try {
-        await api.put(`/appointment/${appointmentId}`, { status: newStatus });
+        await api.patch(`/appointment/${appointmentId}`, { status: newStatus });
         setAppointments((prev) =>
           prev.map((appt) =>
             appt._id === appointmentId ? { ...appt, status: newStatus } : appt
@@ -91,7 +115,7 @@ export default function AppointmentManagementPage() {
         console.error("Error updating appointment status:", error);
         Swal.fire({
           title: "Error!",
-          text: "Failed to update appointment status.",
+          text: "Failed to update appointment status: " + (error.response?.data?.message || error.message),
           icon: "error",
         });
       }
@@ -140,13 +164,25 @@ export default function AppointmentManagementPage() {
           return false;
         }
 
-        return { therapistId, customerId, slotsId, serviceId, amount, notes, status: "Scheduled" };
+        return { 
+          therapistId, 
+          customerId, 
+          slotsId, 
+          serviceId, 
+          amount, 
+          notes, 
+          status: "Scheduled",
+          checkInImage: null,
+          checkOutImage: null
+        };
       },
     });
 
     if (formValues) {
       try {
+        console.log("Sending to API:", formValues);
         const res = await api.post("/appointment", formValues);
+        console.log("API Response:", res.data);
         setAppointments((prev) => [...prev, res.data]);
         Swal.fire({
           title: "Success!",
@@ -159,45 +195,140 @@ export default function AppointmentManagementPage() {
         console.error("Error adding appointment:", error);
         Swal.fire({
           title: "Error!",
-          text: "Failed to add appointment.",
+          text: "Failed to add appointment: " + (error.response?.data?.message || error.message),
           icon: "error",
         });
       }
     }
   };
 
-  const customActions = (row) => {
+  const updateImage = async (appointmentId, imageType) => {
+    const fieldName = imageType === "checkInImage" ? "Check-In" : "Check-Out";
+    const { value: imageUrl } = await Swal.fire({
+      title: `Update ${fieldName} Image`,
+      input: "url",
+      inputLabel: `Enter new ${fieldName.toLowerCase()} image URL`,
+      inputPlaceholder: "https://example.com/image.jpg",
+      showCancelButton: true,
+      confirmButtonText: "Update Image",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      inputValidator: (value) => {
+        if (!value) {
+          return "Please enter a URL!";
+        }
+        if (!/^https?:\/\/.+\..+/.test(value)) {
+          return "Please enter a valid URL!";
+        }
+      },
+    });
+
+    if (imageUrl) {
+      try {
+        const updateData = { [imageType]: imageUrl };
+        console.log(`Updating ${imageType} with:`, updateData);
+        const response = await api.patch(`/appointment/${appointmentId}`, updateData);
+        console.log("Update Response:", response.data.updatedAppointment);
+        setAppointments((prev) =>
+          prev.map((appt) =>
+            appt._id === appointmentId
+              ? { ...appt, [imageType]: response.data.updatedAppointment[imageType] }
+              : appt
+          )
+        );
+        Swal.fire({
+          title: "Success!",
+          text: `${fieldName} image updated successfully.`,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error(`Error updating ${fieldName} image:`, error);
+        Swal.fire({
+          title: "Error!",
+          text: `Failed to update ${fieldName} image: ` + (error.response?.data?.message || error.message),
+          icon: "error",
+        });
+      }
+    }
+  };
+
+  const customActions = (row, originalData) => {
     const isUpdated = updatedAppointments.has(row._id);
-    const isCancelled = row.status === "Cancelled";
+    const isScheduled = row.status === "Scheduled";
+    const isInProgress = row.status === "InProgress";
     const isCompleted = row.status === "Completed";
+    const isCancelled = row.status === "Cancelled";
 
     return (
       <>
+        {/* Complete Button: Only enabled for InProgress */}
         <IconButton
-          onClick={() => updateStatus(row._id, "Completed")}
-          disabled={isUpdated || isCancelled || isCompleted}
+          onClick={() => updateStatus(originalData._id, "Completed")}
+          disabled={isUpdated || !isInProgress || isCompleted || isCancelled}
           sx={{
-            color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#4CAF50",
+            color: isUpdated || !isInProgress || isCompleted || isCancelled ? "#ccc" : "#4CAF50",
             "&:hover": {
-              color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#388E3C",
+              color: isUpdated || !isInProgress || isCompleted || isCancelled ? "#ccc" : "#388E3C",
             },
           }}
           title="Complete Appointment"
         >
           <CheckCircleIcon />
         </IconButton>
+        {/* Cancel Button: Enabled for Scheduled or InProgress */}
         <IconButton
-          onClick={() => updateStatus(row._id, "Cancelled")}
-          disabled={isUpdated || isCancelled || isCompleted}
+          onClick={() => updateStatus(originalData._id, "Cancelled")}
+          disabled={isUpdated || isCompleted || isCancelled}
           sx={{
-            color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#f44336",
+            color: isUpdated || isCompleted || isCancelled ? "#ccc" : "#f44336",
             "&:hover": {
-              color: isUpdated || isCancelled || isCompleted ? "#ccc" : "#d32f2f",
+              color: isUpdated || isCompleted || isCancelled ? "#ccc" : "#d32f2f",
             },
           }}
           title="Cancel Appointment"
         >
           <CancelIcon />
+        </IconButton>
+        {/* InProgress Button: Only enabled for Scheduled */}
+        <IconButton
+          onClick={() => updateStatus(originalData._id, "InProgress")}
+          disabled={isUpdated || !isScheduled || isCompleted || isCancelled}
+          sx={{
+            color: isUpdated || !isScheduled || isCompleted || isCancelled ? "#ccc" : "#FFA500", // Orange for InProgress
+            "&:hover": {
+              color: isUpdated || !isScheduled || isCompleted || isCancelled ? "#ccc" : "#FF8C00",
+            },
+          }}
+          title="Start Appointment (In Progress)"
+        >
+          <PlayArrowIcon />
+        </IconButton>
+        <IconButton
+          onClick={() => updateImage(originalData._id, "checkInImage")}
+          sx={{
+            color: "#2196F3",
+            "&:hover": {
+              color: "#1976D2",
+            },
+          }}
+          title="Update Check-In Image"
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          onClick={() => updateImage(originalData._id, "checkOutImage")}
+          sx={{
+            color: "#2196F3",
+            "&:hover": {
+              color: "#1976D2",
+            },
+          }}
+          title="Update Check-Out Image"
+        >
+          <EditIcon />
         </IconButton>
       </>
     );
@@ -226,6 +357,7 @@ export default function AppointmentManagementPage() {
 
   const transformedData = appointments.map((appt) => ({
     _id: truncateId(appt._id),
+    originalId: appt._id,
     therapistId: truncateId(appt.therapistId?._id || "N/A"),
     therapistName: appt.therapistId?.accountId || "Unknown",
     customerId: truncateId(appt.customerId?._id || "N/A"),
@@ -315,7 +447,7 @@ export default function AppointmentManagementPage() {
           title="Appointment Management"
           idField="_id"
           defaultRowsPerPage={5}
-          actions={customActions}
+          actions={(row) => customActions(row, appointments.find(appt => appt._id === row.originalId))}
         />
       )}
     </>
