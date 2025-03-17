@@ -6,7 +6,6 @@ import { Transformation } from "../../components/homeComponent/Transformation";
 import ClientTestimonials from "../../components/homeComponent/ClientTestimonials";
 import Hero from "../../components/homeComponent/Hero";
 import { SkincareInsights } from "../../components/homeComponent/SkincareInsight";
-import { Header } from "@/components/homeComponent/Header";
 
 export const HomePage = () => {
   return (
