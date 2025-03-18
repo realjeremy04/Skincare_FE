@@ -5,6 +5,7 @@ import { manageShiftReducer } from "./shiftManager/slice";
 import { manageSlotReducer } from "./slotManager/slice";
 import { manageTransactionReducer } from "./transactionManager/slice";
 import { manageAppointmentReducer } from "./appointmentManager/slice";
+import { manageFeedbackReducer } from "./feedbackManager/slice";
 
 export const rootReducer = combineReducers({
   manageService: manageServiceReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   manageSlot: manageSlotReducer,
   manageTransaction: manageTransactionReducer,
   manageAppointment: manageAppointmentReducer,
+  manageFeedback: manageFeedbackReducer,
 });

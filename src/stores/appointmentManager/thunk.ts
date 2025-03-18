@@ -15,6 +15,19 @@ export const getAllAppointmentByTherapistThunk = createAsyncThunk(
   }
 );
 
+export const getAllAppointmentByCustomerThunk = createAsyncThunk(
+  "getAllAppointmentByCustomer",
+  async (req: string, { rejectWithValue }) => {
+    try {
+      const data = await manageAppointment.getAllAppointmentByCustomer(req);
+      return data.data;
+    } catch (error) {
+      console.log("API error:", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const getAppointmentDetailThunk = createAsyncThunk(
   "getAppointmentDetail",
   async (req: string, { rejectWithValue }) => {

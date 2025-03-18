@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getAllAppointmentByTherapistThunk,
+  getAllAppointmentByCustomerThunk,
   getAppointmentDetailThunk,
   updateAppointmentThunk,
 } from "./thunk";
@@ -29,6 +30,10 @@ export const manageAppointmentSlice = createSlice({
         state.loading = false;
         state.appointment = action.payload;
       })
+      .addCase(getAllAppointmentByCustomerThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.appointment = action.payload;
+      })
       .addCase(getAppointmentDetailThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.detail = action.payload;
@@ -47,6 +52,9 @@ export const manageAppointmentSlice = createSlice({
             confirmButton: "swal-confirm-button-custom",
           },
         });
+      })
+      .addCase(updateAppointmentThunk.pending, (state, action) => {
+        state.loading = true;
       })
       .addCase(getAppointmentDetailThunk.rejected, (state, action) => {
         state.loading = false;
