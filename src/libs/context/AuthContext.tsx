@@ -134,21 +134,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     console.log("[Auth Debug] Logging in...");
 
     try {
-      const response = await api.post(
-        "/account/login",
-        { email, password },
-        { withCredentials: true }
-      );
+      // Step 1: Perform login
+      await api.post("/account/login", { email, password });
 
-      const data = response.data;
-      console.log("[Auth Debug] Login successful:", data);
+      // Step 2: Fetch full profile after successful login
+      const profileResponse = await api.get("/account/profile");
+      const fullUser = profileResponse.data.user;
+      setUser(fullUser); // Update user with full profile data
 
-      setUser(data.user);
-      setIsAuthenticated(true);
-      localStorage.setItem("lastLoginTime", new Date().toISOString());
-      localStorage.setItem("authStatus", "loggedIn");
-
-      switch (data.user.role.toLowerCase()) {
+      // Step 3: Redirect based on role
+      switch (fullUser.role.toLowerCase()) {
         case "staff":
           router.push("/staff/appointments");
           break;
@@ -162,7 +157,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           router.push("/staff/appointments");
           break;
         default:
-          router.push("/");
+          router.push("/profile"); // Assuming you navigate to profile
           break;
       }
     } catch (e) {
@@ -172,12 +167,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    console.log("[Auth Debug] Logging out...");
-
-    // Thông báo cho các tab khác biết đã logout
-    localStorage.setItem("authStatus", "loggedOut");
-
-    await handleLogout();
+    try {
+      await api.get("/account/logout");
+    } catch (e) {
+      console.error("Logout failed:", e);
+    } finally {
+      setUser(null);
+      router.push("/");
+    }
   };
 
   return (
