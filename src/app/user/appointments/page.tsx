@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useAppDispatch } from "@/stores";
-import { getAllAppointmentByTherapistThunk } from "@/stores/appointmentManager/thunk";
+import { getAllAppointmentByCustomerThunk } from "@/stores/appointmentManager/thunk";
 import { useAppointment } from "@/hooks/useAppointment";
 import useAuth from "@/libs/context/AuthContext";
 import {
@@ -28,7 +28,7 @@ export default function AppointmentsPage() {
 
   useEffect(() => {
     if (!user) return;
-    dispatch(getAllAppointmentByTherapistThunk(user._id));
+    dispatch(getAllAppointmentByCustomerThunk(user._id));
   }, [dispatch, user]);
 
   if (loading) {
@@ -117,7 +117,7 @@ export default function AppointmentsPage() {
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
-                  Customer
+                  Therapist
                 </TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#f87171" }}
@@ -162,7 +162,7 @@ export default function AppointmentsPage() {
                   }}
                 >
                   <TableCell align="center">
-                    {appt.customerId.username}
+                    {appt.therapistId.accountId.username}
                   </TableCell>
                   <TableCell align="center">
                     {appt.serviceId.serviceName}
@@ -194,7 +194,9 @@ export default function AppointmentsPage() {
                           borderColor: "#f87171",
                         },
                       }}
-                      onClick={() => router.push(`/therapist/appointments/${appt._id}`)}
+                      onClick={() =>
+                        router.push(`/user/appointments/${appt._id}`)
+                      }
                     >
                       View Details
                     </Button>

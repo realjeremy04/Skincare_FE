@@ -14,3 +14,16 @@ export const createTransactionThunk = createAsyncThunk(
     }
   }
 );
+
+export const getTransactionByCustomerThunk = createAsyncThunk(
+  "getTransactionByCustomer",
+  async (req: string, { rejectWithValue }) => {
+    try {
+      const data = await manageTransaction.getTransactionByCustomer(req);
+      return data.data;
+    } catch (error) {
+      console.log("API error:", error);
+      return rejectWithValue(error);
+    }
+  }
+);

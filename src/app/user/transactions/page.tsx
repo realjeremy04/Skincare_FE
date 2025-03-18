@@ -2,9 +2,10 @@
 
 import React, { useEffect } from "react";
 import { useAppDispatch } from "@/stores";
-import { getAllAppointmentByTherapistThunk } from "@/stores/appointmentManager/thunk";
-import { useAppointment } from "@/hooks/useAppointment";
+import { getTransactionByCustomerThunk } from "@/stores/transactionManager/thunk";
+import { useTransaction } from "@/hooks/useTransaction";
 import useAuth from "@/libs/context/AuthContext";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -18,17 +19,16 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
 
-export default function AppointmentsPage() {
+export default function TransactionsPage() {
   const dispatch = useAppDispatch();
-  const { appointment, loading } = useAppointment();
+  const { transactions, loading } = useTransaction();
   const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
-    dispatch(getAllAppointmentByTherapistThunk(user._id));
+    dispatch(getTransactionByCustomerThunk(user?._id));
   }, [dispatch, user]);
 
   if (loading) {
@@ -47,7 +47,7 @@ export default function AppointmentsPage() {
     );
   }
 
-  if (!appointment || appointment.length === 0) {
+  if (!transactions || transactions.length === 0) {
     return (
       <Box
         sx={{
@@ -60,7 +60,7 @@ export default function AppointmentsPage() {
         }}
       >
         <Typography variant="h6" color="text.secondary">
-          No appointments found.
+          No transactions found.
         </Typography>
       </Box>
     );
@@ -68,16 +68,14 @@ export default function AppointmentsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Scheduled":
+      case "pending":
         return "#6b7280"; // gray-500
-      case "In Progress":
-        return "#f97316"; // orange-500
-      case "Completed":
+      case "completed":
         return "#10b981"; // green-500
-      case "Cancelled":
+      case "failed":
         return "#ef4444"; // red-500
       default:
-        return "#374151"; // gray-700 (default)
+        return "#374151"; // gray-700
     }
   };
 
@@ -99,7 +97,7 @@ export default function AppointmentsPage() {
             textAlign: "center",
           }}
         >
-          Your Appointments
+          Your Transactions
         </Typography>
 
         <TableContainer
@@ -117,25 +115,25 @@ export default function AppointmentsPage() {
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
-                  Customer
+                  Transaction ID
                 </TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
-                  Service
+                  Customer Email
                 </TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
-                  Date & Time
+                  Appointment ID
                 </TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
-                  Amount
+                  Payment Method
                 </TableCell>
                 <TableCell
                   sx={{ fontWeight: "bold", color: "#f87171" }}
@@ -147,40 +145,49 @@ export default function AppointmentsPage() {
                   sx={{ fontWeight: "bold", color: "#f87171" }}
                   align="center"
                 >
+                  Created At
+                </TableCell>
+                <TableCell
+                  sx={{ fontWeight: "bold", color: "#f87171" }}
+                  align="center"
+                >
                   Actions
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {appointment.map((appt) => (
+              {transactions.map((transaction) => (
                 <TableRow
-                  key={appt._id}
+                  key={transaction._id}
                   sx={{
                     "&:hover": {
                       bgcolor: "rgb(254 226 226)",
                     },
                   }}
                 >
+                  <TableCell align="center">{transaction._id}</TableCell>
                   <TableCell align="center">
-                    {appt.customerId.username}
+                    {transaction.customerId.email}
                   </TableCell>
                   <TableCell align="center">
-                    {appt.serviceId.serviceName}
+                    {transaction.appointmentId._id}
                   </TableCell>
                   <TableCell align="center">
-                    {`${appt.slotsId.startTime} - ${appt.slotsId.endTime}`}
+                    {transaction.paymentMethod}
                   </TableCell>
-                  <TableCell align="center">${appt.amount}</TableCell>
                   <TableCell align="center">
                     <Typography
                       variant="body2"
                       sx={{
-                        color: getStatusColor(appt.status),
+                        color: getStatusColor(transaction.status),
                         fontWeight: "medium",
                       }}
                     >
-                      {appt.status}
+                      {transaction.status}
                     </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    {new Date(transaction.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell align="center">
                     <Button
@@ -194,9 +201,13 @@ export default function AppointmentsPage() {
                           borderColor: "#f87171",
                         },
                       }}
-                      onClick={() => router.push(`/therapist/appointments/${appt._id}`)}
+                      onClick={() =>
+                        router.push(
+                          `/user/appointments/${transaction.appointmentId._id}`
+                        )
+                      }
                     >
-                      View Details
+                      View Appointment
                     </Button>
                   </TableCell>
                 </TableRow>

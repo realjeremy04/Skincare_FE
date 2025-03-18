@@ -1,30 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTransactionThunk, getTransactionByCustomerThunk } from "./thunk";
-import { Transaction } from "@/types/transaction";
+import { createFeedbackThunk } from "./thunk";
 import Swal from "sweetalert2";
 
 type stateType = {
   loading: boolean;
-  transactions: Transaction[];
 };
 
 const initialState: stateType = {
   loading: false,
-  transactions: [],
 };
 
-export const manageTransactionSlice = createSlice({
-  name: "manageTransaction",
+export const manageFeedbackSlice = createSlice({
+  name: "manageFeedback",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createTransactionThunk.fulfilled, (state, action) => {
+      .addCase(createFeedbackThunk.fulfilled, (state, action) => {
         state.loading = false;
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Transaction created successfully.",
+          text: "Feedback successfully.",
           confirmButtonText: "OK",
           confirmButtonColor: "#3085d6",
           customClass: {
@@ -34,14 +31,15 @@ export const manageTransactionSlice = createSlice({
           },
         });
       })
-      .addCase(createTransactionThunk.rejected, (state, action) => {
+      .addCase(createFeedbackThunk.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createFeedbackThunk.rejected, (state, action) => {
         state.loading = false;
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text:
-            action.error.message ||
-            "An error occurred while creating the transaction.",
+          text: action.error.message || "An error occurred while feedback.",
           confirmButtonText: "OK",
           confirmButtonColor: "#d33",
           customClass: {
@@ -50,15 +48,11 @@ export const manageTransactionSlice = createSlice({
             confirmButton: "swal-confirm-button-custom",
           },
         });
-      })
-      .addCase(getTransactionByCustomerThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.transactions = action.payload.data;
       });
   },
 });
 
 export const {
-  reducer: manageTransactionReducer,
-  actions: manageTransactionActions,
-} = manageTransactionSlice;
+  reducer: manageFeedbackReducer,
+  actions: manageFeedbackActions,
+} = manageFeedbackSlice;
