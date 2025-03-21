@@ -40,7 +40,7 @@ import QuizHistoryDetailPage from "./quizHistory/[id]/page";
 
 import { JSX } from "react";
 import { AuthProvider } from "@/libs/context/AuthContext";
-import ProfilePage from "./profilePage/page";
+import ProfilePage from "./profile/page";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const pathname = usePathname();

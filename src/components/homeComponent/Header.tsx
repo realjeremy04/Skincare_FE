@@ -104,7 +104,7 @@ export const Header = () => {
             className="self-stretch my-auto hover:underline cursor-pointer"
             onClick={() => router.push("/quizPage")}
           >
-            TestSkin
+            Skin Test
           </div>
         </nav>
 

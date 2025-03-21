@@ -10,7 +10,7 @@ import { SkincareInsights } from "../../components/homeComponent/SkincareInsight
 export const HomePage = () => {
   return (
     <div className="flex flex-col gap-10">
-      <main className="flex flex-col mt-24 w-full bg-stone-50 grow-0 max-md:max-w-full overflow-hidden">
+      <main className="flex flex-col w-full bg-stone-50 grow-0 max-md:max-w-full overflow-hidden">
         <Hero />
         <Features />
         <Services />

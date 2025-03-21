@@ -398,7 +398,7 @@ export default function AppointmentManagementPage() {
     customerName: appt.customerId?.username || "Unknown",
     slotId: truncateId(appt.slotsId?._id || "N/A"),
     slotTime: appt.slotsId
-      ? `${formatTime(appt.slotsId.startTime)} - ${formatTime(appt.slotsId.endTime)}`
+      ? `${appt.slotsId.startTime} - ${appt.slotsId.endTime}`
       : "N/A",
     serviceId: truncateId(appt.serviceId?._id || "N/A"),
     serviceName: appt.serviceId?.serviceName || "Unknown",

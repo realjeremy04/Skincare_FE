@@ -65,10 +65,8 @@ export const PaymentPage = () => {
       date: date ?? "",
       paymentMethod: "Cash",
     };
-
-    // console.log(paymentData);
-
     dispatch(createTransactionThunk(paymentData));
+    router.push("/user/appointments");
   };
 
   return (

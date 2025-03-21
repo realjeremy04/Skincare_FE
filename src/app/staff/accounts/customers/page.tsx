@@ -19,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Swal from "sweetalert2";
+import useAuth from "@/libs/context/AuthContext";
 
 export default function CustomerPage() {
   const [accounts, setAccounts] = useState([]);
@@ -31,6 +32,17 @@ export default function CustomerPage() {
     password: "",
     role: role.CUSTOMER,
   });
+
+  const { user } = useAuth();
+
+  if (!user || user.role.toLowerCase() !== role.ADMIN.toLowerCase()) {
+    return (
+      <div>
+        <h1>Access Denied</h1>
+        <p>Only administrators can view customer's accounts.</p>
+      </div>
+    );
+  }
 
   useEffect(() => {
     fetchData();
@@ -162,7 +174,7 @@ export default function CustomerPage() {
         title="Customer Accounts"
         idField="_id"
         defaultRowsPerPage={5}
-        actions={renderActions}
+        // actions={renderActions}
       />
 
       {/* Register New User Dialog */}

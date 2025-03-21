@@ -92,6 +92,7 @@ export default function Profile() {
         username: infoForm.username,
         dob: infoForm.dob,
         phone: infoForm.phone,
+        id: user?._id,
       });
       setUser(response.data.user);
       Swal.fire({
@@ -164,7 +165,10 @@ export default function Profile() {
   // Show loading spinner while auth is initializing
   if (authLoading) {
     return (
-      <Container maxWidth="md" className="py-12 flex justify-center items-center">
+      <Container
+        maxWidth="md"
+        className="py-12 flex justify-center items-center"
+      >
         <CircularProgress sx={{ color: "#F38A7F" }} />
       </Container>
     );
