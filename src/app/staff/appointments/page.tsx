@@ -393,7 +393,7 @@ export default function AppointmentManagementPage() {
     _id: truncateId(appt._id),
     originalId: appt._id,
     therapistId: truncateId(appt.therapistId?._id || "N/A"),
-    therapistName: appt.therapistId?.accountId || "Unknown",
+    therapistName: appt.therapistId?.accountId?.username || "Unknown",
     customerId: truncateId(appt.customerId?._id || "N/A"),
     customerName: appt.customerId?.username || "Unknown",
     slotId: truncateId(appt.slotsId?._id || "N/A"),
@@ -429,6 +429,7 @@ export default function AppointmentManagementPage() {
 
   const columns = [
     { field: "_id", header: "Appointment ID" },
+    { field: "therapistName", header: "Therapist Name" },
     { field: "customerName", header: "Customer Name" },
     { field: "slotTime", header: "Slot Time" },
     { field: "serviceName", header: "Service Name" },

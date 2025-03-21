@@ -19,10 +19,12 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Swal from "sweetalert2";
+import useAuth from "@/libs/context/AuthContext";
 
 export default function EmployeesPage() {
   const [accounts, setAccounts] = useState([]);
   const [openRegisterForm, setOpenRegisterForm] = useState(false);
+    const { user } = useAuth();
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
@@ -52,7 +54,7 @@ export default function EmployeesPage() {
 
   const handleToggleActive = async (id, currentStatus) => {
     try {
-      await api.put(`/account/${id}`, { isActive: !currentStatus });
+      await api.patch(`/account/${id}`, { isActive: !currentStatus });
 
       Swal.fire({
         icon: "success",
@@ -146,6 +148,15 @@ export default function EmployeesPage() {
         }
       : col
   );
+    if (!user || user.role.toLowerCase() !== role.ADMIN.toLowerCase()) {
+      return (
+        <div>
+          <h1>Access Denied</h1>
+          <p>Only administrators can view transactions.</p>
+        </div>
+      );
+    }
+  
 
   return (
     <>

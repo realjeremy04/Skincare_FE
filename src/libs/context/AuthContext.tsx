@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       // Step 1: Perform login
-      await api.post("/account/login", { email, password });
+      await api.post("/account/loginWithCookies", { email, password });
 
       // Step 2: Fetch full profile after successful login
       const profileResponse = await api.get("/account/profile");
