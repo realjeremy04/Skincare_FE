@@ -24,6 +24,7 @@ import useAuth from "@/libs/context/AuthContext";
 export default function CustomerPage() {
   const [accounts, setAccounts] = useState([]);
   const [openRegisterForm, setOpenRegisterForm] = useState(false);
+    const { user } = useAuth();
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
@@ -156,6 +157,15 @@ export default function CustomerPage() {
       : col
   );
 
+    if (!user || user.role.toLowerCase() !== role.ADMIN.toLowerCase()) {
+      return (
+        <div>
+          <h1>Access Denied</h1>
+          <p>Only administrators can view transactions.</p>
+        </div>
+      );
+    }
+  
   return (
     <>
       <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
